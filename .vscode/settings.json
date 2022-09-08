@@ -1,0 +1,37 @@
+{
+    "python.analysis.typeCheckingMode": "strict",
+    "python.analysis.extraPaths": [
+        "/usr/local/lib/python3.10/site-packages"
+    ],
+    "python.languageServer": "Jedi",
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python",
+    },
+    "python.linting.enabled": true,
+    "python.linting.lintOnSave": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--ignore=E501"
+    ],
+    "python.formatting.provider": "autopep8",
+    "python.formatting.autopep8Args": [
+        "--ignore=E50",
+        "--aggressive",
+        "--aggressive"
+    ],
+    "autoDocstring.docstringFormat": "google",
+    "autoDocstring.generateDocstringOnEnter": true,
+    "autoDocstring.guessTypes": true,
+    "autoDocstring.startOnNewLine": true,
+    "autoDocstring.includeName": false,
+    "cSpell.language": "en",
+    "cSpell.enabled": true,
+    "files.eol": "\n",
+    "cSpell.words": [
+        "fastapi",
+        "pydantic",
+        "sqlalchemy"
+    ],
+}
