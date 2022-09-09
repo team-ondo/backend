@@ -17,4 +17,5 @@ class User(Base):
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
 
+    # relationships
     devices = relationship("Device", back_populates="owner")
