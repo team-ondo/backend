@@ -5,7 +5,7 @@ from src.db.db import Base
 
 
 class Temperature(Base):
-    __tablename__ = "users"
+    __tablename__ = "temperature"
 
     id = Column(Integer, primary_key=True, index=True)
     temperature = Column(Float)
