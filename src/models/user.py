@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime
-# from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship
 
 from src.db.db import Base
 
@@ -7,6 +7,7 @@ from src.db.db import Base
 class User(Base):
     # classes will inherit from Base
     __tablename__ = "users"
+    # set tablename for use in db
 
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String(50))
@@ -15,3 +16,5 @@ class User(Base):
     phone_number = Column(String)
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
+
+    devices = relationship("Device", back_populates="owner")
