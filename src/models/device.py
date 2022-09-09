@@ -16,3 +16,4 @@ class Device(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="devices")
+    temperatures = relationship("Temperature", back_populates="owner")
