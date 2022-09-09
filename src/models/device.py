@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey
-# from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship
 
 from src.db.db import Base
 
@@ -14,3 +14,5 @@ class Device(Base):
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
     user_id = Column(Integer, ForeignKey("users.id"))
+
+    owner = relationship("User", back_populates="devices")
