@@ -15,5 +15,9 @@ class Device(Base):
     updated_at = Column(DateTime)
     user_id = Column(Integer, ForeignKey("users.id"))
 
+    # relationships
     owner = relationship("User", back_populates="devices")
-    temperatures = relationship("Temperature", back_populates="owner")
+
+    temperature_data = relationship("Temperature", back_populates="owner")
+
+    humidity_data = relationship("Temperature", back_populates="owner")
