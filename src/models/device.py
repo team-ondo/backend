@@ -20,4 +20,6 @@ class Device(Base):
 
     temperature_data = relationship("Temperature", back_populates="owner")
 
-    humidity_data = relationship("Temperature", back_populates="owner")
+    humidity_data = relationship("Humidity", back_populates="owner")
+
+    motion_data = relationship("Motion", back_populates="owner")
