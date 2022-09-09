@@ -17,16 +17,14 @@ class Device(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
 
     # relationships
+
+    # owner
     owner = relationship("User", back_populates="devices")
 
+    # owned
     temperature_data = relationship("Temperature", back_populates="owner")
-
     humidity_data = relationship("Humidity", back_populates="owner")
-
     motion_data = relationship("Motion", back_populates="owner")
-
     button_data = relationship("Button", back_populates="owner")
-
     alarm_data = relationship("Alarm", back_populates="owner")
-
     notification_data = relationship("Alarm", back_populates="owner")
