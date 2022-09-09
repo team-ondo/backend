@@ -28,3 +28,5 @@ class Device(Base):
     button_data = relationship("Button", back_populates="owner")
 
     alarm_data = relationship("Alarm", back_populates="owner")
+
+    notification_data = relationship("Alarm", back_populates="owner")
