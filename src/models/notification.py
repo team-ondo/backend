@@ -8,7 +8,7 @@ class Notification(Base):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True, index=True)
-    content = Column(String)
+    content = Column(String(300))
     isRead = Column(Boolean)
     created_at = Column(DateTime)
     device_id = Column(Integer, ForeignKey("devices.id"))

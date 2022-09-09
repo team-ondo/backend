@@ -18,4 +18,5 @@ class User(Base):
     updated_at = Column(DateTime)
 
     # relationships
+    # owned
     devices = relationship("Device", back_populates="owner")
