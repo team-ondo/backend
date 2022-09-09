@@ -7,6 +7,7 @@ from src.db.db import Base
 class Device(Base):
     __tablename__ = "devices"
 
+    # columns
     id = Column(Integer, primary_key=True, index=True)
     latitude = Column(Float)
     longitude = Column(Float)
@@ -23,3 +24,7 @@ class Device(Base):
     humidity_data = relationship("Humidity", back_populates="owner")
 
     motion_data = relationship("Motion", back_populates="owner")
+
+    button_data = relationship("Button", back_populates="owner")
+
+    alarm_data = relationship("Alarm", back_populates="owner")
