@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 @router.get("/device-info/{device_id}", response_model=device_schema.Device)
-async def find_device_info(device_id: int, db: AsyncSession = Depends(get_db)):
+async def read_device_info(device_id: int, db: AsyncSession = Depends(get_db)):
     # TODO Need to authenticate before fetching the current data
     result = await device_crud.get_current_device_info(db, device_id)
     return {
