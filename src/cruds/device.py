@@ -32,8 +32,8 @@ async def get_current_device_info(db: AsyncSession, device_id: int) -> (float, f
                     TEMPERATURE A
                 WHERE
                     A.DEVICE_ID = :device_id
-            ) SUB_TEMP
-            LEFT JOIN (
+            ) SUB_TEMP,
+            (
                 SELECT
                     A.HUMIDITY,
                     ROW_NUMBER() OVER (
@@ -45,10 +45,10 @@ async def get_current_device_info(db: AsyncSession, device_id: int) -> (float, f
                     HUMIDITY A
                 WHERE
                     A.DEVICE_ID = :device_id
-            ) SUB_HUMID ON 1 = 1
+            ) SUB_HUMID
         WHERE
             SUB_TEMP.NUM = 1
-            OR SUB_HUMID.NUM = 1
+            AND SUB_HUMID.NUM = 1
     """)
     result: Result = await db.execute(stmt, params={"device_id": device_id})
     first = result.first()
