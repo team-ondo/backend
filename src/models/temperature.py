@@ -12,4 +12,4 @@ class Temperature(Base):
     created_at = Column(DateTime)
     device_id = Column(Integer, ForeignKey("devices.id"))
 
-    owner = relationship("Device", back_populates="temperature_data")
+    device = relationship("Device", back_populates="temperature_data")
