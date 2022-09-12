@@ -17,14 +17,14 @@ engine = create_async_engine(DATABASE_URL, echo=True)
 
 async def drop_database():
     async with engine.begin() as conn:
+        await conn.run_sync(user.Base.metadata.drop_all)
+        await conn.run_sync(device.Base.metadata.drop_all)
         await conn.run_sync(alarm.Base.metadata.drop_all)
         await conn.run_sync(button.Base.metadata.drop_all)
-        await conn.run_sync(device.Base.metadata.drop_all)
         await conn.run_sync(humidity.Base.metadata.drop_all)
         await conn.run_sync(motion.Base.metadata.drop_all)
         await conn.run_sync(notification.Base.metadata.drop_all)
         await conn.run_sync(temperature.Base.metadata.drop_all)
-        await conn.run_sync(user.Base.metadata.drop_all)
 
 
 async def create_database():
