@@ -16,39 +16,39 @@ async def get_current_device_info(db: AsyncSession, device_id: int) -> (float, f
         (float, float): Tuples in the order of temperature, humidity.
     """
     stmt = text("""
-        select
-            sub_temp.temperature,
-            sub_humid.humidity
-        from
+        SELECT
+            SUB_TEMP.TEMPERATURE,
+            SUB_HUMID.HUMIDITY
+        FROM
             (
-                select
-                    a.temperature,
+                SELECT
+                    A.TEMPERATURE,
                     ROW_NUMBER() OVER (
-                        PARTITION BY device_id
+                        PARTITION BY DEVICE_ID
                         ORDER BY
-                            created_at DESC
-                    ) AS num
+                            CREATED_AT DESC
+                    ) AS NUM
                 FROM
-                    temperature a
+                    TEMPERATURE A
                 WHERE
-                    a.device_id = :device_id
-            ) sub_temp
+                    A.DEVICE_ID = :device_id
+            ) SUB_TEMP
             LEFT JOIN (
-                select
-                    a.humidity,
+                SELECT
+                    A.HUMIDITY,
                     ROW_NUMBER() OVER (
-                        PARTITION BY device_id
+                        PARTITION BY DEVICE_ID
                         ORDER BY
-                            created_at DESC
-                    ) AS num
+                            CREATED_AT DESC
+                    ) AS NUM
                 FROM
-                    humidity a
+                    HUMIDITY A
                 WHERE
-                    a.device_id = :device_id
-            ) sub_humid ON 1 = 1
-        where
-            sub_temp.num = 1
-            or sub_humid.num = 1
+                    A.DEVICE_ID = :device_id
+            ) SUB_HUMID ON 1 = 1
+        WHERE
+            SUB_TEMP.NUM = 1
+            OR SUB_HUMID.NUM = 1
     """)
     result: Result = await db.execute(stmt, params={"device_id": device_id})
     first = result.first()
