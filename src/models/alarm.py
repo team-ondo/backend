@@ -12,4 +12,4 @@ class Alarm(Base):
     created_at = Column(DateTime)
     device_id = Column(Integer, ForeignKey("devices.id"))
 
-    owner = relationship("Device", back_populates="alarm_data")
+    device = relationship("Device", back_populates="alarm_data")
