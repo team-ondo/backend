@@ -9,8 +9,8 @@ class Notification(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     content = Column(String(300))
-    isRead = Column(Boolean)
+    is_read = Column(Boolean)
     created_at = Column(DateTime)
     device_id = Column(Integer, ForeignKey("devices.id"))
 
-    owner = relationship("Device", back_populates="notification_data")
+    device = relationship("Device", back_populates="notification_data")
