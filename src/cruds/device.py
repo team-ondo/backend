@@ -55,3 +55,30 @@ async def get_current_device_info(db: AsyncSession, device_id: int) -> (float, f
     if first is None:
         return (None, None)
     return first
+
+
+async def get_latitude_and_longitude(db: AsyncSession, device_id: int) -> (float, float):
+    """
+    Get the latitude and longitude from the device
+
+    Args:
+        db (AsyncSession): AsyncSession
+        device_id (int): Device id
+
+    Returns:
+        (float, float): Tuples in the order of latitude, longitude.
+    """
+    stmt = text("""
+        SELECT
+            LATITUDE,
+            LONGITUDE
+        FROM
+            DEVICES A
+        WHERE
+            A.ID = :device_id
+    """)
+    result: Result = await db.execute(stmt, params={"device_id": device_id})
+    first = result.first()
+    if first is None:
+        return (None, None)
+    return first
