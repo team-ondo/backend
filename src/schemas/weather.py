@@ -7,6 +7,3 @@ class Weather(BaseModel):
     temperature_f: float | None = Field(None, example="74.69", description="Temperature (Fahrenheit)")
     humidity: int | None = Field(None, example="88", description="Humidity (%)")
     weather_icon: str | None = Field(None, example="50n", description="Weather icon id")
-
-    class Config:
-        orm_mode = True
