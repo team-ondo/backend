@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.db.db import get_db
 import src.cruds.device as device_crud
 import src.schemas.device as device_schema
+from typing import List
 
 router = APIRouter()
 
@@ -15,3 +16,8 @@ async def read_device_info(device_id: int, db: AsyncSession = Depends(get_db)):
         "temperature_celsius": result[0],
         "humidity": result[1],
     }
+
+
+@router.post("/device-data/{device_id}")
+async def create_device_data(device_id: int, device_data_list: List[device_schema.DeviceDataCreate], db: AsyncSession = Depends(get_db)):
+    await device_crud.create_device_data(db, device_id, device_data_list)
