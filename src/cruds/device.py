@@ -1,6 +1,8 @@
 from sqlalchemy.sql import text
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
+import src.schemas.device as device_schema
+from typing import List
 
 
 async def get_current_device_info(db: AsyncSession, device_id: int) -> (float, float):
@@ -82,3 +84,143 @@ async def get_latitude_and_longitude(db: AsyncSession, device_id: int) -> (float
     if first is None:
         return (None, None)
     return first
+
+
+async def create_device_data(db: AsyncSession, device_id: int, device_data_list: List[device_schema.DeviceDataCreate]) -> None:
+    """
+    Create each parameter data from device data
+
+    Args:
+        db (AsyncSession): AsyncSession
+        device_id (int): Device id
+        device_data_list (List[device_schema.DeviceDataCreate]): List of device data
+    """
+    collected_data = {
+        "temperature": [],
+        "humidity": [],
+        "motion": [],
+        "alarm": [],
+        "button": [],
+    }
+    for device_data in device_data_list:
+        collected_data["temperature"].append({
+            "temperature": device_data.temperature_c,
+            "created_at": device_data.created_at,
+            "device_id": device_id
+        })
+        collected_data["humidity"].append({
+            "humidity": device_data.humidity,
+            "created_at": device_data.created_at,
+            "device_id": device_id
+        })
+        collected_data["motion"].append({
+            "motion": device_data.motion,
+            "created_at": device_data.created_at,
+            "device_id": device_id
+        })
+        collected_data["alarm"].append({
+            "is_alarm": device_data.alarm,
+            "created_at": device_data.created_at,
+            "device_id": device_id
+        })
+        collected_data["button"].append({
+            "device_listening": device_data.button,
+            "created_at": device_data.created_at,
+            "device_id": device_id
+        })
+
+    await _create_temperature(db, collected_data["temperature"])
+    await _create_humidity(db, collected_data["humidity"])
+    await _create_motion(db, collected_data["motion"])
+    await _create_alarm(db, collected_data["alarm"])
+    await _create_button(db, collected_data["button"])
+
+
+async def _create_temperature(db: AsyncSession, temperature_data_list) -> None:
+    """
+    Create temperature data.
+
+    Args:
+        db (AsyncSession): AsyncSession
+        temperature_data_list : List of temperature table parameters
+    """
+    stmt = text("""
+        INSERT INTO
+            TEMPERATURE (temperature, created_at, device_id)
+        VALUES
+            (:temperature, :created_at, :device_id)
+    """)
+    await db.execute(stmt, params=temperature_data_list)
+    await db.commit()
+
+
+async def _create_humidity(db: AsyncSession, humidity_data_list) -> None:
+    """
+    Create humidity data.
+
+    Args:
+        db (AsyncSession): AsyncSession
+        humidity_data_list : List of humidity table parameters
+    """
+    stmt = text("""
+        INSERT INTO
+            HUMIDITY (humidity, created_at, device_id)
+        VALUES
+            (:humidity, :created_at, :device_id)
+    """)
+    await db.execute(stmt, params=humidity_data_list)
+    await db.commit()
+
+
+async def _create_motion(db: AsyncSession, motion_data_list) -> None:
+    """
+    Create motion data.
+
+    Args:
+        db (AsyncSession): AsyncSession
+        motion_data_list : List of motion table parameters
+    """
+    stmt = text("""
+        INSERT INTO
+            MOTION (motion, created_at, device_id)
+        VALUES
+            (:motion, :created_at, :device_id)
+    """)
+    await db.execute(stmt, params=motion_data_list)
+    await db.commit()
+
+
+async def _create_alarm(db: AsyncSession, alarm_data_list) -> None:
+    """
+    Create alarm data.
+
+    Args:
+        db (AsyncSession): AsyncSession
+        alarm_data_list : List of alarm table parameters
+    """
+    stmt = text("""
+        INSERT INTO
+            ALARM (is_alarm, created_at, device_id)
+        VALUES
+            (:is_alarm, :created_at, :device_id)
+    """)
+    await db.execute(stmt, params=alarm_data_list)
+    await db.commit()
+
+
+async def _create_button(db: AsyncSession, button_data_list) -> None:
+    """
+    Create button data.
+
+    Args:
+        db (AsyncSession): AsyncSession
+        button_data_list : List of button table parameters
+    """
+    stmt = text("""
+        INSERT INTO
+            BUTTON (device_listening, created_at, device_id)
+        VALUES
+            (:device_listening, :created_at, :device_id)
+    """)
+    await db.execute(stmt, params=button_data_list)
+    await db.commit()
