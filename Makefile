@@ -3,3 +3,9 @@ run:
 
 require:
 	poetry export --without-hashes --with dev --output requirements.txt
+
+reset-table:
+	poetry run python -m src.migrate_db
+
+seed:
+	poetry run python -m src.seed_db
