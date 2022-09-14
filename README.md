@@ -12,7 +12,10 @@
 
 ## .env
 
-Create `.env` file and set the API keys.
+Create `.env` file and set the key and values.  
+`OPEN_WEATHER_APPID` can get from [OpenWeather](https://openweathermap.org/).
 ```env
 OPEN_WEATHER_APPID="xxxxxxxxxxxxxxxxxxxx"
+ASYNC_DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost:5432/postgres"
+SYNC_DATABASE_URL="postgresql+psycopg2://postgres:postgres@localhost:5432/postgres"
 ```
