@@ -9,6 +9,10 @@
 - Click the bottom-left corner button and select `Open Folder in Container...`
 - Run server
   - `make run`
+- Create tables
+  - `make reset-table`
+- Seed initial data
+  - `make seed`
 
 ## .env
 
