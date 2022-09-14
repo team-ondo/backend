@@ -13,6 +13,8 @@
   - `make reset-table`
 - Seed initial data
   - `make seed`
+- Generate requirements.txt from poetry
+  - `make require`
 
 ## .env
 
