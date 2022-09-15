@@ -8,20 +8,26 @@
     "editor.tabSize": 4,
     "[python]": {
         "editor.defaultFormatter": "ms-python.python",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
     },
+    "python.sortImports.args": [
+        "--settings-path", "${workspaceFolder}/pyproject.toml"
+    ],
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--config", "${workspaceFolder}/pyproject.toml"
+    ],
     "python.linting.enabled": true,
     "python.linting.lintOnSave": true,
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Args": [
-        "--ignore=E501,B008",
+        "--config", "${workspaceFolder}/setup.cfg",
     ],
-    "python.formatting.provider": "autopep8",
-    "python.formatting.autopep8Args": [
-        "--ignore=E50",
-        "--aggressive",
-        "--aggressive"
-    ],
+    "python.linting.mypyEnabled": true,
+    
     "autoDocstring.docstringFormat": "google",
     "autoDocstring.generateDocstringOnEnter": true,
     "autoDocstring.guessTypes": true,
