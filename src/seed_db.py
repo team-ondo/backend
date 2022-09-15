@@ -1,9 +1,11 @@
+import os
 from datetime import datetime
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from src.models.models import User, Device, Temperature, Humidity, Notification, Motion, Button, Alarm
-from dotenv import load_dotenv
-import os
+
+from src.models.models import Alarm, Button, Device, Humidity, Motion, Notification, Temperature, User
 
 load_dotenv()
 SYNC_DATABASE_URL = os.getenv("SYNC_DATABASE_URL")
