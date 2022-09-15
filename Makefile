@@ -1,6 +1,9 @@
 run:
 	uvicorn src.main:app --reload --host 0.0.0.0
 
+test:
+	pytest --color=yes --code-highlight=yes --no-header -v
+
 require:
 	poetry export --without-hashes --with dev --output requirements.txt
 
