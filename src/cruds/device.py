@@ -7,8 +7,8 @@ from sqlalchemy.sql import text
 import src.schemas.device as device_schema
 
 
-async def get_current_device_info(db: AsyncSession, device_id: int) -> Tuple[float | None, float | None]:
-    """Get current device info
+async def get_latest_device_info(db: AsyncSession, device_id: int) -> Tuple[float | None, float | None]:
+    """Get latest device info
 
     Get the latest temperature, humidity from the database.
 
