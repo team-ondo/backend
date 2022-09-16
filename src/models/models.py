@@ -1,18 +1,26 @@
 from datetime import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import relationship
 
 from src.db.db import Base
 
 
 class CreatedUpdatedDefaultTimeStampMixin:
-    created_at = Column(DateTime, default=datetime.now(), nullable=False)
-    updated_at = Column(DateTime, default=datetime.now(), nullable=False)
+    @declared_attr
+    def created_at(cls) -> Column:
+        return Column(DateTime, default=datetime.now(), nullable=False)
+
+    @declared_attr
+    def updated_at(cls) -> Column:
+        return Column(DateTime, default=datetime.now(), nullable=False)
 
 
 class CreatedNoDefaultTimeStampMixin:
-    created_at = Column(DateTime, nullable=False)
+    @declared_attr
+    def created_at(cls) -> Column:
+        return Column(DateTime, nullable=False)
 
 
 class User(Base, CreatedUpdatedDefaultTimeStampMixin):
