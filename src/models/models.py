@@ -40,6 +40,7 @@ class User(Base, CreatedUpdatedDefaultTimeStampMixin):
     last_name = Column(String(50))
     email = Column(String(100), unique=True, index=True)
     phone_number = Column(String(20))
+    password = Column(String)
 
     devices = relationship("Device", back_populates="user")
 
