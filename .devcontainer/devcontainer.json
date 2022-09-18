@@ -45,7 +45,8 @@
 				"njpwerner.autodocstring",
 				"tamasfe.even-better-toml",
 				"streetsidesoftware.code-spell-checker",
-				"adpyke.vscode-sql-formatter"
+				"adpyke.vscode-sql-formatter",
+				"Gruntfuggly.todo-tree"
 			]
 		}
 	},
