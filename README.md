@@ -19,9 +19,13 @@
 ## .env
 
 Create `.env` file and set the key and values.  
-`OPEN_WEATHER_APPID` can get from [OpenWeather](https://openweathermap.org/).
+`OPEN_WEATHER_APPID` can get from [OpenWeather](https://openweathermap.org/).  
+`JWT_SECRET_KEY` and `JWT_REFRESH_KEY` is for jwt. You can make a secure secret key by `openssl rand -hex 32`.
+
 ```env
 OPEN_WEATHER_APPID="xxxxxxxxxxxxxxxxxxxx"
 ASYNC_DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost:5432/postgres"
 SYNC_DATABASE_URL="postgresql+psycopg2://postgres:postgres@localhost:5432/postgres"
+JWT_SECRET_KEY="xxxxxxxxxxxxxxxxxxxx"
+JWT_REFRESH_KEY="xxxxxxxxxxxxxxxxxxxx"
 ```
