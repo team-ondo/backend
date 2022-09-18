@@ -20,6 +20,7 @@ SQLAlchemy-Utils = "^0.38.3"
 python-multipart = "^0.0.5"
 python-jose = { version = "^3.3.0", extras = ["cryptography"] }
 passlib = { version = "^1.7.4", extras = ["bcrypt"] }
+email-validator = "^1.2.1"
 
 [tool.poetry.group.dev.dependencies]
 pysen = "^0.10.2"
