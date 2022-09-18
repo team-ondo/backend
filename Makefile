@@ -1,3 +1,6 @@
+
+.PHONY: run test require reset-table seed
+
 run:
 	uvicorn src.main:app --reload --host 0.0.0.0
 
