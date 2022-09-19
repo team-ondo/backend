@@ -7,14 +7,14 @@ from sqlalchemy.sql import text
 import src.schemas.device as device_schema
 
 
-async def get_latest_device_data(db: AsyncSession, device_id: int) -> Tuple[float | None, float | None]:
+async def get_latest_device_data(db: AsyncSession, device_id: str) -> Tuple[float | None, float | None]:
     """Get latest device info
 
     Get the latest temperature, humidity from the database.
 
     Args:
         db (AsyncSession): AsyncSession
-        device_id (int): Device id
+        device_id (str): Device id
 
     Returns:
         (float, float): Tuples in the order of temperature, humidity.
@@ -63,13 +63,13 @@ async def get_latest_device_data(db: AsyncSession, device_id: int) -> Tuple[floa
     return first
 
 
-async def get_latitude_and_longitude(db: AsyncSession, device_id: int) -> Tuple[float | None, float | None]:
+async def get_latitude_and_longitude(db: AsyncSession, device_id: str) -> Tuple[float | None, float | None]:
     """
     Get the latitude and longitude from the device
 
     Args:
         db (AsyncSession): AsyncSession
-        device_id (int): Device id
+        device_id (str): Device id
 
     Returns:
         (float, float): Tuples in the order of latitude, longitude.
@@ -92,13 +92,13 @@ async def get_latitude_and_longitude(db: AsyncSession, device_id: int) -> Tuple[
     return first
 
 
-async def create_device_data(db: AsyncSession, device_id: int, device_data_list: list[device_schema.DeviceDataCreate]) -> None:
+async def create_device_data(db: AsyncSession, device_id: str, device_data_list: list[device_schema.DeviceDataCreate]) -> None:
     """
     Create each parameter data from device data
 
     Args:
         db (AsyncSession): AsyncSession
-        device_id (int): Device id
+        device_id (str): Device id
         device_data_list (list[device_schema.DeviceDataCreate]): List of device data
     """
     collected_data: dict = {
