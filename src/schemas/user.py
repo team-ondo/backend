@@ -7,9 +7,9 @@ class UserCreate(BaseModel):
     first_name: str = Field(min_length=1, max_length=50, example="John", description="First name")
     last_name: str = Field(min_length=1, max_length=50, example="Doe", description="Last name")
     email: EmailStr = Field(example="example@example.com", description="Email address")
-    phone_number: str = Field(max_length=20, example="000-0000-0000", description="Phone number(Landline phone, Wireless phone numbers only)")
-    zip_code: str = Field(max_length=7, example="1234567", description="Zip code(Without Hyphen)")
-    serial_number: int = Field(example="1", description="Serial number on the device")
+    phone_number: str = Field(max_length=20, example="090-0000-0000", description="Phone number(Landline phone, Wireless phone numbers only)")
+    zip_code: str = Field(max_length=7, example="1001701", description="Zip code(Without Hyphen)")
+    serial_number: str = Field(example="cf57432e-809e-4353-adbd-9d5c0d733868", description="Serial number on the device")
     password: str = Field(min_length=8, max_length=16, example="secretPassword!", description="Password")
     _longitude: int
     _latitude: int
