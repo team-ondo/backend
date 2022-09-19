@@ -17,3 +17,5 @@ TOKEN_VALIDATION_FAIL_EXCEPTION = HTTPException(status_code=status.HTTP_403_FORB
 USER_NOT_FOUND_EXCEPTION = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find user")
 USER_ALREADY_EXISTS_EXCEPTION = HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists")
 INCORRECT_EMAIL_OR_PASSWORD_EXCEPTION = HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect email or password")
+SERIAL_NUMBER_NOT_FOUND_EXCEPTION = HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Serial number not found")
+SERIAL_NUMBER_ALREADY_REGISTERED_EXCEPTION = HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Serial number already registered")
