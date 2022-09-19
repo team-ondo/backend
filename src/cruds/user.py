@@ -86,13 +86,17 @@ async def find_user_by_email(db: AsyncSession, email: str) -> Tuple[int, str] | 
     return result.first()
 
 
-async def create_user(db: AsyncSession, user: UserCreate) -> None:
+async def create_user(db: AsyncSession, user: UserCreate) -> int:
     """
     Create user.
+    Return the created user id.
 
     Args:
         db (AsyncSession): AsyncSession
         user (UserCreate): UserCreate object.
+
+    Returns:
+        int: Created user id.
     """
     stmt = text(
         """
@@ -100,9 +104,10 @@ async def create_user(db: AsyncSession, user: UserCreate) -> None:
             USERS (FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, PASSWORD, CREATED_AT, UPDATED_AT)
         VALUES
             (:first_name, :last_name, :email, :phone_number, :password, :created_at, :updated_at)
+        RETURNING ID
         """
     )
-    await db.execute(
+    result: Result = await db.execute(
         stmt,
         params={
             "first_name": user.first_name,
@@ -114,4 +119,7 @@ async def create_user(db: AsyncSession, user: UserCreate) -> None:
             "updated_at": datetime.now(),
         },
     )
+    created_user_id = result.first()[0]
     await db.commit()
+
+    return created_user_id
