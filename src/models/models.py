@@ -1,8 +1,10 @@
+import uuid
 from datetime import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import relationship
+from sqlalchemy_utils import UUIDType
 
 from src.db.db import Base
 
@@ -21,6 +23,13 @@ class CreatedNoDefaultTimeStampMixin:
     @declared_attr
     def created_at(cls) -> Column:
         return Column(DateTime, nullable=False)
+
+
+class Register(Base, CreatedUpdatedDefaultTimeStampMixin):
+    __tablename__ = "registered"
+
+    id = Column(UUIDType(binary=False), primary_key=True, index=True, default=uuid.uuid4)
+    registered = Column(Boolean)
 
 
 class User(Base, CreatedUpdatedDefaultTimeStampMixin):
