@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Tuple
 
 from sqlalchemy.engine import Result
@@ -90,6 +91,39 @@ async def get_latitude_and_longitude(db: AsyncSession, device_id: str) -> Tuple[
     if first is None:
         return (None, None)
     return first
+
+
+async def create_device(db: AsyncSession, device_id: str, latitude: float, longitude: float, user_id: int) -> None:
+    """
+    Create device.
+
+    Args:
+        db (AsyncSession): AsyncSession
+        device_id (str): Device id.
+        latitude (float): Latitude.
+        longitude (float): Longitude.
+        user_id (str): User id.
+    """
+    stmt = text(
+        """
+        INSERT INTO
+            DEVICES (ID, LATITUDE, LONGITUDE, USER_ID, CREATED_AT, UPDATED_AT)
+        VALUES
+            (:device_id, :latitude, :longitude, :user_id, :created_at, :updated_at)
+        """
+    )
+    await db.execute(
+        stmt,
+        params={
+            "device_id": device_id,
+            "latitude": latitude,
+            "longitude": longitude,
+            "user_id": user_id,
+            "created_at": datetime.now(),
+            "updated_at": datetime.now(),
+        },
+    )
+    await db.commit()
 
 
 async def create_device_data(db: AsyncSession, device_id: str, device_data_list: list[device_schema.DeviceDataCreate]) -> None:
