@@ -2,12 +2,13 @@ import os
 
 import requests
 from dotenv import load_dotenv
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Path
 from requests.exceptions import RequestException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import src.cruds.device as device_crud
 import src.schemas.weather as weather_schema
+from src.constants.common import RE_UUID
 from src.db.db import get_db
 from src.utils.common import convert_celsius_to_fahrenheit
 
@@ -19,11 +20,12 @@ OPEN_WEATHER_APPID = os.getenv("OPEN_WEATHER_APPID")
 
 
 @router.get("/weather-info/{lang}/{device_id}", response_model=weather_schema.Weather)
-async def read_weather_info(device_id: int, lang: str = "en", db: AsyncSession = Depends(get_db)) -> dict:
+async def read_weather_info(device_id: str = Path(regex=RE_UUID), lang: str = "en", db: AsyncSession = Depends(get_db)) -> dict:
     if not (lang == "en" or lang == "ja"):
         raise HTTPException(status_code=404, detail="Only supports `en` or `ja`")
 
     # TODO Need to authenticate before fetching the device latitude and longitude
+    # TODO Check device exists, and owned by user.
 
     lat, lon = await device_crud.get_latitude_and_longitude(db, device_id)
     params = {"lat": lat, "lon": lon, "units": "metric", "appid": OPEN_WEATHER_APPID, "lang": lang}
