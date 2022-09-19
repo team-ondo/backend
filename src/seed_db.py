@@ -29,5 +29,5 @@ notification1 = Notification(content="Please call", is_read=False, created_at=se
 button1 = Button(device_listening=True, created_at=seed_time, device_id=uuid)
 alarm1 = Alarm(is_alarm=False, created_at=seed_time, device_id=uuid)
 
-session.add_all([user1, device1, temp1, humidity1, motion1, notification1, button1, alarm1])
+session.add_all([registered1, user1, device1, temp1, humidity1, motion1, notification1, button1, alarm1])
 session.commit()
