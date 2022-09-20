@@ -72,4 +72,3 @@ async def register_device_by_device_id(db: AsyncSession, device_id: str) -> None
         """
     )
     await db.execute(stmt, params={"device_id": device_id})
-    await db.commit()
