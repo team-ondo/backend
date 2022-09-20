@@ -13,6 +13,14 @@ class Device(BaseModel):
         orm_mode = True
 
 
+class DeviceHistorical(BaseModel):
+    max_temp: float | None = Field(None, example="25.1", description="Max Temperature (Celsius)")
+    min_temp: float | None = Field(None, example="25.1", description="Min Temperature (Celsius)")
+    max_humid: float | None = Field(None, example="87.0", description="Max Humidity")
+    min_humid: float | None = Field(None, example="87.0", description="Min Humidity")
+    date: str = Field(example="2022-07-01", description="Created Day")
+
+
 class DeviceDataCreate(BaseModel):
     temperature_c: float = Field(example="25.1", description="Temperature (Celsius)")
     temperature_f: float = Field(example="77.18", description="Temperature (Fahrenheit)")
