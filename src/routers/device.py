@@ -22,6 +22,15 @@ async def read_device_data(device_id: str = Path(regex=RE_UUID), db: AsyncSessio
     }
 
 
+@router.get("/device-data/{device_id}/historical/week", response_model=device_schema.Device)
+async def read_device_data_week(device_id: str = Path(regex=RE_UUID), db: AsyncSession = Depends(get_db)) -> dict:
+    result = await device_crud.get_historical_device_data_week(db, device_id)
+    return {
+        "temperature_celsius": result[0],
+        "humidity": result[1],
+    }
+
+
 @router.post("/device-data/{device_id}")
 async def create_device_data(
     device_data_list: List[device_schema.DeviceDataCreate], device_id: str = Path(regex=RE_UUID), db: AsyncSession = Depends(get_db)

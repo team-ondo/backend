@@ -64,6 +64,22 @@ async def get_latest_device_data(db: AsyncSession, device_id: str) -> Tuple[floa
     return first
 
 
+async def get_historical_device_data_week(db: AsyncSession, device_id: str):
+    """
+    Get one week of max/min temp and humidity from the device
+
+    Args:
+        db (AsyncSession): AsyncSession
+        device_id (str): Device id
+
+    Returns:
+        TODO confirm
+    """
+    stmt = ""
+    result: Result = await db.execute(stmt, params={"device_id": device_id})
+    return result
+
+
 async def get_latitude_and_longitude(db: AsyncSession, device_id: str) -> Tuple[float | None, float | None]:
     """
     Get the latitude and longitude from the device
