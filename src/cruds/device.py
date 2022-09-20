@@ -123,7 +123,6 @@ async def create_device(db: AsyncSession, device_id: str, latitude: float, longi
             "updated_at": datetime.now(),
         },
     )
-    await db.commit()
 
 
 async def create_device_data(db: AsyncSession, device_id: str, device_data_list: list[device_schema.DeviceDataCreate]) -> None:
@@ -173,7 +172,6 @@ async def _create_temperature(db: AsyncSession, temperature_data_list: list[dict
     """
     )
     await db.execute(stmt, params=temperature_data_list)
-    await db.commit()
 
 
 async def _create_humidity(db: AsyncSession, humidity_data_list: list[dict]) -> None:
@@ -193,7 +191,6 @@ async def _create_humidity(db: AsyncSession, humidity_data_list: list[dict]) -> 
     """
     )
     await db.execute(stmt, params=humidity_data_list)
-    await db.commit()
 
 
 async def _create_motion(db: AsyncSession, motion_data_list: list[dict]) -> None:
@@ -213,7 +210,6 @@ async def _create_motion(db: AsyncSession, motion_data_list: list[dict]) -> None
     """
     )
     await db.execute(stmt, params=motion_data_list)
-    await db.commit()
 
 
 async def _create_alarm(db: AsyncSession, alarm_data_list: list[dict]) -> None:
@@ -233,7 +229,6 @@ async def _create_alarm(db: AsyncSession, alarm_data_list: list[dict]) -> None:
     """
     )
     await db.execute(stmt, params=alarm_data_list)
-    await db.commit()
 
 
 async def _create_button(db: AsyncSession, button_data_list: list[dict]) -> None:
@@ -253,4 +248,3 @@ async def _create_button(db: AsyncSession, button_data_list: list[dict]) -> None
     """
     )
     await db.execute(stmt, params=button_data_list)
-    await db.commit()

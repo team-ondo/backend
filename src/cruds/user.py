@@ -120,6 +120,4 @@ async def create_user(db: AsyncSession, user: UserCreate) -> int:
         },
     )
     created_user_id = result.first()[0]
-    await db.commit()
-
     return created_user_id
