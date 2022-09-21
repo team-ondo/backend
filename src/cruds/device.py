@@ -64,6 +64,52 @@ async def get_latest_device_data(db: AsyncSession, device_id: str) -> Tuple[floa
     return first
 
 
+async def get_historical_device_data_day(db: AsyncSession, device_id: str) -> List[device_schema.DeviceHistorical]:
+    """
+    Get 24 hour points of temperature and humidity from device
+
+    Args:
+        db (AsyncSession): AsyncSession
+        device_id (str): Device id
+
+    Returns:
+        [device.schema.DeviceHistorical]: List of device historical data
+    """
+    stmt = """
+        SELECT
+            MIN(A.TEMPERATURE) AS MIN_TEMP,
+            MAX(A.TEMPERATURE) AS MAX_TEMP,
+            MIN(B.HUMIDITY) AS MIN_HUMID,
+            MAX(B.HUMIDITY) AS MAX_HUMID,
+            TO_CHAR(A.CREATED_AT, 'YYYY/MM/DD HH24:00:00') AS CREATED_DATE
+        FROM TEMPERATURE A
+        INNER JOIN HUMIDITY B
+            ON A.CREATED_AT = B.CREATED_AT
+            AND A.DEVICE_ID = B.DEVICE_ID
+        WHERE
+            A.CREATED_AT BETWEEN now() - interval '1 day' AND now()
+            AND A.DEVICE_ID = :device_id
+        GROUP BY CREATED_DATE
+        ORDER BY CREATED_DATE
+    """
+    result: Result = await db.execute(stmt, params={"device_id": device_id})
+    rows = result.all()
+
+    result = []
+    for row in rows:
+        result.append(
+            device_schema.DeviceHistorical(
+                min_temp=row[0],
+                max_temp=row[1],
+                min_humid=row[2],
+                max_humid=row[3],
+                date=row[4],
+            )
+        )
+
+    return result
+
+
 async def get_historical_device_data_week(db: AsyncSession, device_id: str) -> List[device_schema.DeviceHistorical]:
     """
     Get 7 days of temperature and humidity from device
