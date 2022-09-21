@@ -25,13 +25,8 @@ seed_time = datetime.now()
 
 
 def get_date():
-    # slightly randomizes day
     return datetime.now() - date.timedelta(random.randint(1, 7))
 
-
-date1 = get_date()
-date2 = get_date()
-date3 = get_date()
 
 data_set = []
 
@@ -52,18 +47,13 @@ data_set.append(
 )
 
 
-temp_data_set = generate_historic_temp_data()
-for columns in temp_data_set:
-    data_set.append(Temperature(**columns))
+generated_data_set = generate_historic_temp_data()
 
-data_set.append(Humidity(humidity=54, created_at=date1, device_id=uuid))
-data_set.append(Humidity(humidity=54, created_at=date1, device_id=uuid))
-data_set.append(Humidity(humidity=66, created_at=date1, device_id=uuid))
-data_set.append(Humidity(humidity=70, created_at=date2, device_id=uuid))
-data_set.append(Humidity(humidity=71, created_at=date2, device_id=uuid))
-data_set.append(Humidity(humidity=54, created_at=date2, device_id=uuid))
-data_set.append(Humidity(humidity=72, created_at=date3, device_id=uuid))
-data_set.append(Humidity(humidity=60, created_at=date3, device_id=uuid))
+for row in generated_data_set.get("temp"):
+    data_set.append(Temperature(**row))
+
+for row in generated_data_set.get("humid"):
+    data_set.append(Humidity(**row))
 
 data_set.append(Motion(motion=True, created_at=seed_time, device_id=uuid))
 data_set.append(Notification(content="Please call", is_read=False, created_at=seed_time, device_id=uuid))
@@ -71,7 +61,5 @@ data_set.append(Button(device_listening=True, created_at=seed_time, device_id=uu
 data_set.append(Alarm(is_alarm=False, created_at=seed_time, device_id=uuid))
 
 session.add_all(data_set)
-
-# session.add_all(test_temp_humidity)
 
 session.commit()
