@@ -36,7 +36,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession
         auth_schema.SystemUser: User info object.
     """
     token_payload = verify_access_token(token, db)
-    count = user_cruds.count_user_by_user_id(db, token_payload.user_id)
+    count = await user_cruds.count_user_by_user_id(db, token_payload.user_id)
     if count == 0:
         raise USER_NOT_FOUND_EXCEPTION
     return auth_schema.SystemUser(user_id=token_payload.user_id)
