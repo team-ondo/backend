@@ -28,3 +28,5 @@ async def device_alarm_on(notification_status: notification_schema.NotificationS
 
     # print if successfully sent
     print(message.sid)
+
+    # TODO Handle failed messages
