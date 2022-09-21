@@ -11,9 +11,6 @@ RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/
 # pysen
 ENV PYSEN_IGNORE_GIT 1
 
-# Git hook
-RUN git config --local core.hooksPath .githooks
-
 # Poetry
 RUN pip install --upgrade pip
 RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python3 - && \
