@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 
 from src.auth.utils import create_hash_password
 from src.models.models import Alarm, Button, Device, Humidity, Motion, Notification, Register, Temperature, User
-from src.temp_seed import generate_historic_temp_data
+from src.seed.generate_seed_data import generate_historic_temp_data
 
 load_dotenv()
 SYNC_DATABASE_URL = os.getenv("SYNC_DATABASE_URL")
