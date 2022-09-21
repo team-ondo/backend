@@ -90,6 +90,7 @@ async def get_historical_device_data_week(db: AsyncSession, device_id: str) -> L
             A.CREATED_AT BETWEEN now() - interval '1 week' AND now()
             AND A.DEVICE_ID = :device_id
         GROUP BY CREATED_DATE
+        ORDER BY CREATED_DATE
     """
     result: Result = await db.execute(stmt, params={"device_id": device_id})
     rows = result.all()
