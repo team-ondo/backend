@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.routers import auth, device, settings, weather
+from src.routers import auth, device, notification, settings, weather
 
 app = FastAPI()
 app.add_middleware(
@@ -15,6 +15,7 @@ app.include_router(device.router)
 app.include_router(weather.router)
 app.include_router(auth.router)
 app.include_router(settings.router)
+app.include_router(notification.router)
 
 
 @app.get("/")
