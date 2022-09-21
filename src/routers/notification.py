@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 from twilio.rest import Client
 
+import src.schemas.notification as notification_schema
 from src.constants.common import RE_UUID
 from src.db.db import get_db
 
@@ -18,10 +19,10 @@ TWILIO_VERIFIED_NUMBER = os.getenv("TWILIO_VERIFIED_NUMBER")
 
 
 @router.post("/device/{device_id}/alarm/on")
-async def device_alarm_on(device_id: str = Path(regex=RE_UUID)):
+async def device_alarm_on(notification_status: notification_schema.NotificationStatus, device_id: str = Path(regex=RE_UUID)):
     client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
 
-    notification_text = "TEST MESSAGE FROM ONDO BACKEND"
+    notification_text = notification_status.message
 
     message = client.messages.create(body=notification_text, from_=TWILIO_VIRTUAL_NUMBER, to=TWILIO_VERIFIED_NUMBER)
 
