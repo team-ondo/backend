@@ -52,6 +52,8 @@ class Device(Base, CreatedUpdatedDefaultTimeStampMixin):
     latitude = Column(Float)
     longitude = Column(Float)
     device_name = Column(String(100))
+    temp_upper_limit = Column(Float)
+    temp_lower_limit = Column(Float)
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="devices")
