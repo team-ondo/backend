@@ -14,10 +14,10 @@ class Device(BaseModel):
 
 
 class DeviceHistorical(BaseModel):
-    max_temp: float | None = Field(None, example="25.1", description="Max Temperature (Celsius)")
-    min_temp: float | None = Field(None, example="25.1", description="Min Temperature (Celsius)")
-    max_humid: float | None = Field(None, example="87.0", description="Max Humidity")
-    min_humid: float | None = Field(None, example="87.0", description="Min Humidity")
+    max_temp: float = Field(None, example="25.1", description="Max Temperature (Celsius)")
+    min_temp: float = Field(None, example="25.1", description="Min Temperature (Celsius)")
+    max_humid: float = Field(None, example="87.0", description="Max Humidity")
+    min_humid: float = Field(None, example="87.0", description="Min Humidity")
     date: str = Field(example="2022-07-01", description="Created Day")
 
 
