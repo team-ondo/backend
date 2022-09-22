@@ -43,7 +43,18 @@ data_set.append(
     )
 )
 data_set.append(
-    Device(id=uuid, latitude=35.6560, longitude=139.7247, device_name="Roppongi_Device", created_at=seed_time, updated_at=seed_time, user_id=1)
+    Device(
+        id=uuid,
+        latitude=35.6560,
+        longitude=139.7247,
+        device_name="Roppongi_Device",
+        zip_code="1001701",
+        temp_upper_limit=32.9,
+        temp_lower_limit=29.2,
+        created_at=seed_time,
+        updated_at=seed_time,
+        user_id=1,
+    )
 )
 
 
