@@ -58,7 +58,8 @@ async def find_device_settings_by_user_id(db: AsyncSession, user_id: int) -> Lis
             A.ID,
             A.DEVICE_NAME,
             A.TEMP_UPPER_LIMIT,
-            A.TEMP_LOWER_LIMIT
+            A.TEMP_LOWER_LIMIT,
+            A.ZIP_CODE
         FROM
             DEVICES A
         WHERE
@@ -77,6 +78,7 @@ async def find_device_settings_by_user_id(db: AsyncSession, user_id: int) -> Lis
                 device_name=row[1],
                 temperature_upper_limit=row[2],
                 temperature_lower_limit=row[3],
+                zip_code=row[4],
             )
         )
 
