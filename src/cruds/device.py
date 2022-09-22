@@ -168,7 +168,6 @@ async def get_historical_device_data_month(db: AsyncSession, device_id: str) -> 
         [device.schema.DeviceHistorical]: List of device historical data
     """
 
-    # TO_CHAR(A.CREATED_AT, 'MON-W') AS CREATED_DATE
     stmt = """
         SELECT
             MIN(A.TEMPERATURE) AS MIN_TEMP,
