@@ -10,6 +10,7 @@ import src.cruds.device as device_crud
 import src.schemas.weather as weather_schema
 from src.constants.common import RE_UUID
 from src.db.db import get_db
+from src.errors.errors import WeatherAPIRequestError, WeatherLangSupportException, error_response
 from src.utils.common import convert_celsius_to_fahrenheit
 
 load_dotenv()
@@ -19,10 +20,19 @@ OPEN_WEATHER_API = "https://api.openweathermap.org/data/2.5/weather"
 OPEN_WEATHER_APPID = os.getenv("OPEN_WEATHER_APPID")
 
 
-@router.get("/weather-info/{lang}/{device_id}", response_model=weather_schema.Weather)
+@router.get(
+    "/weather-info/{lang}/{device_id}",
+    response_model=weather_schema.Weather,
+    responses=error_response(
+        [
+            WeatherLangSupportException,
+            WeatherAPIRequestError,
+        ]
+    ),
+)
 async def read_weather_info(device_id: str = Path(regex=RE_UUID), lang: str = "en", db: AsyncSession = Depends(get_db)) -> dict:
     if not (lang == "en" or lang == "ja"):
-        raise HTTPException(status_code=404, detail="Only supports `en` or `ja`")
+        raise WeatherLangSupportException()
 
     # TODO Need to authenticate before fetching the device latitude and longitude
     # TODO Check device exists, and owned by user.
@@ -35,7 +45,7 @@ async def read_weather_info(device_id: str = Path(regex=RE_UUID), lang: str = "e
     except RequestException as e:
         # TODO Replace with logger
         print(f"Request failed: {e.response.text}")
-        raise HTTPException(status_code=500, detail="OpenWeatherAPI Request Error")
+        raise WeatherAPIRequestError()
 
     json = r.json()
     response = {
