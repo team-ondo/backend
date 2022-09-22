@@ -18,6 +18,11 @@ class DeviceHistorical(BaseModel):
     date: str = Field(example="2022-07-01", description="Created Day")
 
 
+class DeviceHistoricalAlarm(BaseModel):
+    is_alarm: bool = Field(example=True, description="Alarm is on or off")
+    date: str = Field(example="2022-07-01", description="Created Day")
+
+
 class DeviceDataCreate(BaseModel):
     temperature_c: float = Field(example="25.1", description="Temperature (Celsius)")
     temperature_f: float = Field(example="77.18", description="Temperature (Fahrenheit)")
