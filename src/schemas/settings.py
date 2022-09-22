@@ -13,3 +13,4 @@ class DeviceSettings(BaseModel):
     device_name: str = Field(example="Roppongi_Device", description="Device name")
     temperature_upper_limit: float = Field(example=30.2, description="Upper limit for temperature")
     temperature_lower_limit: float = Field(example=29.2, description="Lower limit for temperature")
+    zip_code: str = Field(example="1001701", description="Zip code(Without Hyphen)")
