@@ -8,6 +8,7 @@ fake = Faker()
 UUID = "a7382f5c33264cf8b717549affe1c2eb"
 NUM_OF_DATA_POINTS = 10000
 NUM_OF_DATA_POINTS_FOR_DAY = 1000
+NUM_OF_DATA_POINTS_FOR_ALARM = 20
 
 
 def generate_historic_temp_data() -> Dict[str, List]:
@@ -38,5 +39,22 @@ def generate_historic_temp_data() -> Dict[str, List]:
 
         result["temp"].append(temp_obj)
         result["humid"].append(humid_obj)
+
+    return result
+
+
+def generate_historic_alarm_data() -> Dict[str, List]:
+
+    result: Dict[str, List] = {
+        "alarm": [],
+    }
+
+    for _ in range(NUM_OF_DATA_POINTS_FOR_ALARM):
+        alarm_bool = fake.boolean()
+        date = fake.date_time_between(start_date=datetime.now() - timedelta(days=30), end_date=datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
+
+        alarm_obj = {"is_alarm": alarm_bool, "created_at": date, "device_id": UUID}
+
+        result["alarm"].append(alarm_obj)
 
     return result
