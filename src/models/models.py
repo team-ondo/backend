@@ -49,6 +49,7 @@ class Device(Base, CreatedUpdatedDefaultTimeStampMixin):
     __tablename__ = "devices"
 
     id = Column(UUIDType(binary=False), primary_key=True, index=True)
+    zip_code = Column(String(7))
     latitude = Column(Float)
     longitude = Column(Float)
     device_name = Column(String(100))
