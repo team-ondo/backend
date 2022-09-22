@@ -46,7 +46,8 @@
 				"tamasfe.even-better-toml",
 				"streetsidesoftware.code-spell-checker",
 				"adpyke.vscode-sql-formatter",
-				"Gruntfuggly.todo-tree"
+				"Gruntfuggly.todo-tree",
+				"wmaurer.change-case"
 			]
 		}
 	},
