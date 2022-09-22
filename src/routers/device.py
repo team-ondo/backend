@@ -37,6 +37,12 @@ async def read_device_data_month(device_id: str = Path(regex=RE_UUID), db: Async
     return result
 
 
+@router.get("/device-data/{device_id}/historical/alarm", response_model=List[device_schema.DeviceHistoricalAlarm])
+async def read_device_data_alarm(device_id: str = Path(regex=RE_UUID), db: AsyncSession = Depends(get_db)):
+    result = await device_crud.get_historical_device_data_alarm(db, device_id)
+    return result
+
+
 @router.post("/device-data/{device_id}")
 async def create_device_data(
     device_data_list: List[device_schema.DeviceDataCreate], device_id: str = Path(regex=RE_UUID), db: AsyncSession = Depends(get_db)
