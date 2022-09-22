@@ -6,15 +6,8 @@ from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import src.schemas.auth as auth_schema
-from src.constants.auth import (
-    ACCESS_TOKEN_EXPIRE_MINUTES,
-    ALGORITHM,
-    JWT_REFRESH_KEY,
-    JWT_SECRET_KEY,
-    REFRESH_TOKEN_EXPIRE_MINUTES,
-    TOKEN_EXPIRED_EXCEPTION,
-    TOKEN_VALIDATION_FAIL_EXCEPTION,
-)
+from src.constants.auth import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, JWT_REFRESH_KEY, JWT_SECRET_KEY, REFRESH_TOKEN_EXPIRE_MINUTES
+from src.errors.errors import TokenExpiredException, TokenValidationFailException
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name="JWT")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -96,9 +89,8 @@ def verify_access_token(token: str, db: AsyncSession) -> auth_schema.TokenPayloa
         db (AsyncSession): AsyncSession
 
     Raises:
-        TOKEN_VALIDATION_FAIL_EXCEPTION: Failed to validate token.
-        TOKEN_EXPIRED_EXCEPTION: Token expired.
-        USER_NOT_FOUND_EXCEPTION: User not found.
+        TokenValidationFailException: Failed to validate token.
+        TokenExpiredException: Token expired.
 
     Returns:
         auth_schema.TokenPayload: Payload object.
@@ -106,14 +98,14 @@ def verify_access_token(token: str, db: AsyncSession) -> auth_schema.TokenPayloa
     try:
         payload: dict = jwt.decode(token, JWT_SECRET_KEY, algorithms=[ALGORITHM])
     except JWTError:
-        raise TOKEN_VALIDATION_FAIL_EXCEPTION
+        raise TokenValidationFailException()
 
     token_payload = auth_schema.TokenPayload(**payload)
 
     if token_payload.user_id is None or token_payload.exp is None:
-        raise TOKEN_VALIDATION_FAIL_EXCEPTION
+        raise TokenValidationFailException()
 
     if datetime.fromtimestamp(token_payload.exp) < datetime.now():
-        raise TOKEN_EXPIRED_EXCEPTION
+        raise TokenExpiredException()
 
     return token_payload
