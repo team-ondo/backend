@@ -87,7 +87,7 @@ async def get_historical_device_data_day(db: AsyncSession, device_id: str) -> Li
             ON A.CREATED_AT = B.CREATED_AT
             AND A.DEVICE_ID = B.DEVICE_ID
         WHERE
-            A.CREATED_AT BETWEEN now() - interval '1 day' AND now()
+            A.CREATED_AT BETWEEN now() - INTERVAL '1 day' AND now()
             AND A.DEVICE_ID = :device_id
         GROUP BY CREATED_DATE
         ORDER BY CREATED_DATE
@@ -133,7 +133,7 @@ async def get_historical_device_data_week(db: AsyncSession, device_id: str) -> L
             ON A.CREATED_AT = B.CREATED_AT
             AND A.DEVICE_ID = B.DEVICE_ID
         WHERE
-            A.CREATED_AT BETWEEN now() - interval '1 week' AND now()
+            A.CREATED_AT BETWEEN now() - INTERVAL '1 week' AND now()
             AND A.DEVICE_ID = :device_id
         GROUP BY CREATED_DATE
         ORDER BY CREATED_DATE
@@ -152,6 +152,58 @@ async def get_historical_device_data_week(db: AsyncSession, device_id: str) -> L
                 date=row[4],
             )
         )
+
+    return result
+
+
+async def get_historical_device_data_month(db: AsyncSession, device_id: str) -> List[device_schema.DeviceHistorical]:
+    """
+    Get 4 weeks of temperature and humidity from device
+
+    Args:
+        db (AsyncSession): AsyncSession
+        device_id (str): Device id
+
+    Returns:
+        [device.schema.DeviceHistorical]: List of device historical data
+    """
+
+    # TO_CHAR(A.CREATED_AT, 'MON-W') AS CREATED_DATE
+    stmt = """
+        SELECT
+            MIN(A.TEMPERATURE) AS MIN_TEMP,
+            MAX(A.TEMPERATURE) AS MAX_TEMP,
+            MIN(B.HUMIDITY) AS MIN_HUMID,
+            MAX(B.HUMIDITY) AS MAX_HUMID,
+            TO_CHAR(DATE_TRUNC('week', A.CREATED_AT), 'YYYY/MM/DD') AS CREATED_DATE
+        FROM TEMPERATURE A
+        INNER JOIN HUMIDITY B
+            ON A.CREATED_AT = B.CREATED_AT
+            AND A.DEVICE_ID = B.DEVICE_ID
+        WHERE
+            A.CREATED_AT BETWEEN now() - INTERVAL '4 WEEKS' AND now()
+            AND A.DEVICE_ID = :device_id
+        GROUP BY CREATED_DATE
+        ORDER BY CREATED_DATE DESC
+    """
+    result: Result = await db.execute(stmt, params={"device_id": device_id})
+    rows = result.all()
+
+    result = []
+    for i, row in enumerate(rows):
+        if i == 4:
+            break
+        result.append(
+            device_schema.DeviceHistorical(
+                min_temp=row[0],
+                max_temp=row[1],
+                min_humid=row[2],
+                max_humid=row[3],
+                date=row[4],
+            )
+        )
+
+    result.reverse()
 
     return result
 
