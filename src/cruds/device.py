@@ -227,6 +227,8 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
         FROM ALARM
         WHERE
             DEVICE_ID = :device_id
+        AND
+            IS_ALARM = True
         ORDER BY DATE, HOUR
     """
 
@@ -242,6 +244,8 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
                 hour=row[2],
             )
         )
+
+    print(result)
 
     return result
 
