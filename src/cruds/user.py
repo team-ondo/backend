@@ -1,12 +1,12 @@
 from datetime import datetime
-from typing import Tuple
+from typing import List, Tuple
 
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import text
 
+import src.schemas.user as user_schema
 from src.auth.utils import create_hash_password
-from src.schemas.user import UserCreate
 
 
 async def count_user_by_user_id(db: AsyncSession, user_id: int) -> int:
@@ -86,14 +86,14 @@ async def find_user_by_email(db: AsyncSession, email: str) -> Tuple[int, str] | 
     return result.first()
 
 
-async def create_user(db: AsyncSession, user: UserCreate) -> int:
+async def create_user(db: AsyncSession, user: user_schema.UserCreate) -> int:
     """
     Create user.
     Return the created user id.
 
     Args:
         db (AsyncSession): AsyncSession
-        user (UserCreate): UserCreate object.
+        user (user_schema.UserCreate): UserCreate object.
 
     Returns:
         int: Created user id.
@@ -121,3 +121,34 @@ async def create_user(db: AsyncSession, user: UserCreate) -> int:
     )
     created_user_id = result.first()[0]
     return created_user_id
+
+
+async def find_device_id_by_user_id(db: AsyncSession, user_id: int) -> List[user_schema.UserDevice]:
+    """
+    Find device id owned by user.
+
+    Args:
+        db (AsyncSession): AsyncSession.
+        user_id (int): User id.
+
+    Returns:
+        List[user_schema.UserDevice]: List of UserDevice object.
+    """
+    stmt = text(
+        """
+        SELECT
+            A.ID
+        FROM
+            DEVICES A
+        WHERE
+            A.USER_ID = :user_id
+        """
+    )
+    execute_result: Result = await db.execute(stmt, params={"user_id": user_id})
+
+    result = []
+    rows = execute_result.all()
+    for row in rows:
+        result.append(user_schema.UserDevice(device_id=row[0]))
+
+    return result
