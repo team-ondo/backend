@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import UUID4, BaseModel, EmailStr, Field, validator
 
 from src.utils.common import fetch_longitude_latitude_from_zip_code, is_phone_number, is_zip_code
 
@@ -31,3 +31,7 @@ class UserCreate(BaseModel):
         cls._latitude = latitude
 
         return v
+
+
+class UserDevice(BaseModel):
+    device_id: UUID4 = Field(example="a7382f5c-3326-4cf8-b717-549affe1c2eb", description="Device id")
