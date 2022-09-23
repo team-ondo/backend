@@ -227,7 +227,7 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
         FROM ALARM
         WHERE
             DEVICE_ID = :device_id
-        ORDER BY DATE
+        ORDER BY DATE, HOUR
     """
 
     result: Result = await db.execute(stmt, params={"device_id": device_id})
