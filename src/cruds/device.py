@@ -218,14 +218,16 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
     Returns:
         [device.schema.DeviceHistoricalAlarm]: List of device historical alarm data
     """
+    #
     stmt = """
         SELECT
-            IS_ALARM,
-            TO_CHAR(CREATED_AT, 'YYYY/MM/DD')
+            IS_ALARM,   
+            TO_CHAR(CREATED_AT, 'YYYY/MM/DD') AS DATE,    
+            TO_CHAR(CREATED_AT, 'HH24:MI') AS HOUR
         FROM ALARM
         WHERE
             DEVICE_ID = :device_id
-        ORDER BY CREATED_AT
+        ORDER BY DATE
     """
 
     result: Result = await db.execute(stmt, params={"device_id": device_id})
@@ -237,6 +239,7 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
             device_schema.DeviceHistoricalAlarm(
                 is_alarm=row[0],
                 date=row[1],
+                hour=row[2],
             )
         )
 
