@@ -41,3 +41,19 @@ async def read_user_settings(current_user: auth_schema.SystemUser = Depends(get_
 )
 async def read_device_settings(current_user: auth_schema.SystemUser = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     return await settings_cruds.find_device_settings_by_user_id(db, current_user.user_id)
+
+
+@router.post(
+    "/settings/device",
+    responses=error_response(
+        [
+            UserNotFoundException,
+            TokenValidationFailException,
+            TokenExpiredException,
+        ]
+    ),
+)
+async def update_device_settings(
+    device: settings_schema.UpdateDeviceSettings, current_user: auth_schema.SystemUser = Depends(get_current_user), db: AsyncSession = Depends(get_db)
+):
+    await settings_cruds.update_device_settings(db, device)
