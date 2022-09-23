@@ -221,8 +221,8 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
     #
     stmt = """
         SELECT
-            IS_ALARM,   
-            TO_CHAR(CREATED_AT, 'YYYY/MM/DD') AS DATE,    
+            IS_ALARM,
+            TO_CHAR(CREATED_AT, 'YYYY/MM/DD') AS DATE,
             TO_CHAR(CREATED_AT, 'HH24:MI') AS HOUR
         FROM ALARM
         WHERE
