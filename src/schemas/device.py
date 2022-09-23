@@ -21,6 +21,7 @@ class DeviceHistorical(BaseModel):
 class DeviceHistoricalAlarm(BaseModel):
     is_alarm: bool = Field(example=True, description="Alarm is on or off")
     date: str = Field(example="2022-07-01", description="Created Day")
+    hour: str = Field(example="13:51", description="Created Time")
 
 
 class DeviceDataCreate(BaseModel):
