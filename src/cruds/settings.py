@@ -83,3 +83,39 @@ async def find_device_settings_by_user_id(db: AsyncSession, user_id: int) -> Lis
         )
 
     return result
+
+
+async def update_device_settings(db: AsyncSession, device: settings_schema.UpdateDeviceSettings):
+    update_set_values = []
+    if device.device_name is not None:
+        update_set_values.append("DEVICE_NAME = :device_name")
+    if device.temperature_upper_limit is not None:
+        update_set_values.append("TEMP_UPPER_LIMIT = :temp_upper_limit")
+    if device.temperature_lower_limit is not None:
+        update_set_values.append("TEMP_LOWER_LIMIT = :temp_lower_limit")
+    if device.zip_code is not None:
+        update_set_values.append("ZIP_CODE = :zip_code")
+    if device.latitude is not None:
+        update_set_values.append("LATITUDE = :latitude")
+    if device.longitude is not None:
+        update_set_values.append("LONGITUDE = :longitude")
+    update_set_values_joined: str = ",\n".join(update_set_values)
+
+    stmt = text(
+        f"""
+        UPDATE DEVICES
+        SET
+            {update_set_values_joined}
+        """
+    )
+    await db.execute(
+        stmt,
+        params={
+            "device_name": device.device_name,
+            "temp_upper_limit": device.temperature_upper_limit,
+            "temp_lower_limit": device.temperature_lower_limit,
+            "zip_code": device.zip_code,
+            "latitude": device.latitude,
+            "longitude": device.longitude,
+        },
+    )
