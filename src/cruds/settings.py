@@ -86,6 +86,13 @@ async def find_device_settings_by_user_id(db: AsyncSession, user_id: int) -> Lis
 
 
 async def update_device_settings(db: AsyncSession, device: settings_schema.UpdateDeviceSettings):
+    """
+    Update device settings.
+
+    Args:
+        db (AsyncSession): AsyncSession.
+        device (settings_schema.UpdateDeviceSettings): UpdateDeviceSettings object.
+    """
     update_set_values = []
     if device.device_name is not None:
         update_set_values.append("DEVICE_NAME = :device_name")
@@ -99,7 +106,7 @@ async def update_device_settings(db: AsyncSession, device: settings_schema.Updat
         update_set_values.append("LATITUDE = :latitude")
     if device.longitude is not None:
         update_set_values.append("LONGITUDE = :longitude")
-    update_set_values_joined: str = ",\n".join(update_set_values)
+    update_set_values_joined = ",\n".join(update_set_values)
 
     stmt = text(
         f"""
