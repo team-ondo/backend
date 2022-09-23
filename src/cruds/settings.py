@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import text
 
 import src.schemas.settings as settings_schema
+from src.auth.utils import create_hash_password
 
 
 async def find_user_settings_by_user_id(db: AsyncSession, user_id: int) -> settings_schema.UserSettings:
@@ -153,23 +154,40 @@ async def find_user_password_by_user_id(db: AsyncSession, user_id: int) -> str:
     return result.first()[0]
 
 
-async def update_user_settings(db: AsyncSession, params: Dict[str, Any]):
+async def update_user_settings(db: AsyncSession, user: settings_schema.UpdateUserSettings):
     """
     Update user settings.
 
     Args:
         db (AsyncSession): AsyncSession.
-        params (Dict[str, Any]): Params.
+        user (Dict[str, settings_schema.UpdateUserSettings]): UpdateUserSettings object.
     """
-    update_values = ",\n".join([f"{column_name.upper()} = :{column_name}" for column_name in params.keys()])
+    update_set_values = []
+    if user.first_name is not None:
+        update_set_values.append("FIRST_NAME = :first_name")
+    if user.last_name is not None:
+        update_set_values.append("LAST_NAME = :last_name")
+    if user.email is not None:
+        update_set_values.append("EMAIL = :email")
+    if user.phone_number is not None:
+        update_set_values.append("PHONE_NUMBER = :phone_number")
+    if user.new_password is not None:
+        update_set_values.append("PASSWORD = :password")
+    update_set_values_joined = ",\n".join(update_set_values)
     stmt = text(
         f"""
         UPDATE USERS
         SET
-            {update_values}
+            {update_set_values_joined}
         """
     )
     await db.execute(
         stmt,
-        params=params,
+        params={
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+            "phone_number": user.phone_number,
+            "password": user.new_password if user.new_password is None else create_hash_password(user.new_password),
+        },
     )
