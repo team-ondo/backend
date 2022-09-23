@@ -60,7 +60,7 @@ async def update_device_settings(
     await settings_cruds.update_device_settings(db, device)
 
 
-@router.post(
+@router.put(
     "/settings/user",
     responses=error_response(
         [
