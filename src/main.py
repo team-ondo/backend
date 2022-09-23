@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from src.errors.errors import APIError
-from src.routers import auth, device, notification, settings, weather
+from src.routers import auth, device, notification, settings, user, weather
 
 app = FastAPI()
 app.add_middleware(
@@ -25,6 +25,7 @@ app.include_router(weather.router)
 app.include_router(auth.router)
 app.include_router(settings.router)
 app.include_router(notification.router)
+app.include_router(user.router)
 
 
 @app.get("/")
