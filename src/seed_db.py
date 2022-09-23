@@ -37,7 +37,7 @@ data_set.append(
         last_name="Kimura",
         email="test@test.com",
         phone_number="111-2222-3333",
-        password=create_hash_password("secret"),
+        password=create_hash_password("secretPassword"),
         created_at=seed_time,
         updated_at=seed_time,
     )
