@@ -58,6 +58,11 @@ class WeatherAPIRequestError(APIError):
     detail = "Failed to request to OpenWeatherAPI"
 
 
+class IncorrectOldPasswordError(APIError):
+    status_code = status.HTTP_401_UNAUTHORIZED
+    detail = "Old password is not correct"
+
+
 def error_response(error_types: List[Type[APIError]]) -> dict:
     """
     Convert error_types to OpenAPI format.
