@@ -221,7 +221,6 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
     #
     stmt = """
         SELECT
-            IS_ALARM,
             TO_CHAR(CREATED_AT, 'YYYY/MM/DD') AS DATE,
             TO_CHAR(CREATED_AT, 'HH24:MI') AS HOUR
         FROM ALARM
@@ -239,13 +238,10 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
     for row in rows:
         result.append(
             device_schema.DeviceHistoricalAlarm(
-                is_alarm=row[0],
-                date=row[1],
-                hour=row[2],
+                date=row[0],
+                hour=row[1],
             )
         )
-
-    print(result)
 
     return result
 
