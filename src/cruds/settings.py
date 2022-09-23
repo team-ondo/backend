@@ -1,4 +1,4 @@
-from typing import List
+from typing import Any, Dict, List
 
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -125,4 +125,51 @@ async def update_device_settings(db: AsyncSession, device: settings_schema.Updat
             "latitude": device.latitude,
             "longitude": device.longitude,
         },
+    )
+
+
+async def find_user_password_by_user_id(db: AsyncSession, user_id: int) -> str:
+    """
+    Find user password by user id.
+
+    Args:
+        db (AsyncSession): AsyncSession.
+        user_id (int): User id.
+
+    Returns:
+        str: User password.
+    """
+    stmt = text(
+        """
+        SELECT
+            PASSWORD
+        FROM
+            USERS A
+        WHERE
+            A.ID = :user_id
+        """
+    )
+    result: Result = await db.execute(stmt, params={"user_id": user_id})
+    return result.first()[0]
+
+
+async def update_user_settings(db: AsyncSession, params: Dict[str, Any]):
+    """
+    Update user settings.
+
+    Args:
+        db (AsyncSession): AsyncSession.
+        params (Dict[str, Any]): Params.
+    """
+    update_values = ",\n".join([f"{column_name.upper()} = :{column_name}" for column_name in params.keys()])
+    stmt = text(
+        f"""
+        UPDATE USERS
+        SET
+            {update_values}
+        """
+    )
+    await db.execute(
+        stmt,
+        params=params,
     )
