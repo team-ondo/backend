@@ -11,8 +11,8 @@ class UserCreate(BaseModel):
     zip_code: str = Field(max_length=7, example="1001701", description="Zip code(Without Hyphen)")
     serial_number: str = Field(example="cf57432e-809e-4353-adbd-9d5c0d733868", description="Serial number on the device")
     password: str = Field(min_length=8, max_length=16, example="secretPassword!", description="Password")
-    _longitude: int
-    _latitude: int
+    _longitude: float
+    _latitude: float
 
     @validator("phone_number")
     def validate_phone_number(cls, v):
