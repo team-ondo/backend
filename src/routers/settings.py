@@ -43,7 +43,7 @@ async def read_device_settings(current_user: auth_schema.SystemUser = Depends(ge
     return await settings_cruds.find_device_settings_by_user_id(db, current_user.user_id)
 
 
-@router.post(
+@router.put(
     "/settings/device",
     responses=error_response(
         [
