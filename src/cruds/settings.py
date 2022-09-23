@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import List
 
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
