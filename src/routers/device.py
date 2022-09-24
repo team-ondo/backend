@@ -4,9 +4,11 @@ from fastapi import APIRouter, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import src.cruds.device as device_crud
+import src.schemas.auth as auth_schema
 import src.schemas.device as device_schema
 from src.constants.common import RE_UUID
 from src.db.db import get_db
+from src.routers.auth import get_current_user
 
 router = APIRouter()
 
