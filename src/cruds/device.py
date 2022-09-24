@@ -262,7 +262,7 @@ async def get_device_data_notifications(db: AsyncSession, device_id: str) -> Lis
             CONTENT_TYPE,
             CONTENT,
             IS_READ,
-            TO_CHAR(CREATED_AT, 'YYYY/MM/DD') AS DATE,
+            TO_CHAR(CREATED_AT, 'YYYY/MM/DD') AS DATE
         FROM NOTIFICATIONS
         WHERE
             DEVICE_ID = :device_id
@@ -277,9 +277,9 @@ async def get_device_data_notifications(db: AsyncSession, device_id: str) -> Lis
         result.append(
             device_schema.DeviceNotificationData(
                 content_type=row[0],
-                content=row[0],
-                is_read=row[0],
-                date=row[0],
+                content=row[1],
+                is_read=row[2],
+                date=row[3],
             )
         )
 
