@@ -24,7 +24,7 @@ class DeviceHistoricalAlarm(BaseModel):
 
 
 class DeviceNotificationData(BaseModel):
-    id: int = Field(example=1, description="User id - integer")
+    id: int = Field(example=1, description="Notification id")
     content_type: str = Field(example="Alarm", description="Type of notification to be pushed.")
     content: str = Field(example="Alarm was triggered", description="Content for the notification.")
     is_read: bool = Field(example=True, description="Boolean value to show read / unread status.")
