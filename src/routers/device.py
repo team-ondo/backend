@@ -4,11 +4,9 @@ from fastapi import APIRouter, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import src.cruds.device as device_crud
-import src.schemas.auth as auth_schema
 import src.schemas.device as device_schema
 from src.constants.common import RE_UUID
 from src.db.db import get_db
-from src.routers.auth import get_current_user
 
 router = APIRouter()
 
@@ -42,12 +40,6 @@ async def read_device_data_month(device_id: str = Path(regex=RE_UUID), db: Async
 @router.get("/device-data/{device_id}/historical/alarm", response_model=List[device_schema.DeviceHistoricalAlarm])
 async def read_device_data_alarm(device_id: str = Path(regex=RE_UUID), db: AsyncSession = Depends(get_db)):
     result = await device_crud.get_historical_device_data_alarm(db, device_id)
-    return result
-
-
-@router.get("/notifications", response_model=List[device_schema.DeviceNotificationData])
-async def read_device_data_notifications(current_user: auth_schema.SystemUser = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
-    result = await device_crud.get_device_data_notifications(db, current_user.user_id)
     return result
 
 

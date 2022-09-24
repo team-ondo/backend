@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 from twilio.rest import Client
@@ -25,6 +27,21 @@ async def device_alarm_on(notification_status: notification_schema.NotificationS
     print(message.sid)
 
     # TODO Handle failed messages
+
+
+@router.get(
+    "/notifications",
+    responses=error_response(
+        [
+            UserNotFoundException,
+            TokenValidationFailException,
+            TokenExpiredException,
+        ]
+    ),
+    response_model=List[notification_schema.DeviceNotificationData],
+)
+async def read_device_data_notifications(current_user: auth_schema.SystemUser = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    return await notification_crud.find_device_notification_by_user_id(db, current_user.user_id)
 
 
 @router.put(
