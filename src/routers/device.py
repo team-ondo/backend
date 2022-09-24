@@ -43,9 +43,9 @@ async def read_device_data_alarm(device_id: str = Path(regex=RE_UUID), db: Async
     return result
 
 
-@router.get("/device/{device_id}/notifications", response_model=List[device_schema.DeviceNotificationData])
-async def read_device_data_notifications(device_id: str = Path(regex=RE_UUID), db: AsyncSession = Depends(get_db)):
-    result = await device_crud.get_device_data_notifications(db, device_id)
+@router.get("/notifications", response_model=List[device_schema.DeviceNotificationData])
+async def read_device_data_notifications(current_user: auth_schema.SystemUser = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    result = await device_crud.get_device_data_notifications(db, current_user.user_id)
     return result
 
 
