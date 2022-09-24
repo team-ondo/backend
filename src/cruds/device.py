@@ -266,8 +266,6 @@ async def get_device_data_notifications(db: AsyncSession, user_id: int) -> List[
             TO_CHAR(CREATED_AT, 'YYYY/MM/DD') AS DATE
         FROM NOTIFICATIONS
         WHERE
-            DEVICE_ID = :device_id
-        WHERE
             DEVICE_ID IN (
                 SELECT
                     ID
