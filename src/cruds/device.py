@@ -246,7 +246,7 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
     return result
 
 
-async def get_device_data_notifications(db: AsyncSession, device_id: str) -> List[device_schema.DeviceNotificationData]:
+async def get_device_data_notifications(db: AsyncSession, user_id: int) -> List[device_schema.DeviceNotificationData]:
     """
     Get notifications data from db
 
@@ -266,24 +266,31 @@ async def get_device_data_notifications(db: AsyncSession, device_id: str) -> Lis
         FROM NOTIFICATIONS
         WHERE
             DEVICE_ID = :device_id
+        WHERE
+            DEVICE_ID IN (
+                SELECT
+                    ID
+                FROM DEVICES
+                WHERE
+                    USER_ID = :user_id
+            )
         ORDER BY DATE
     """
 
-    result: Result = await db.execute(stmt, params={"device_id": device_id})
+    result: Result = await db.execute(stmt, params={"user_id": user_id})
     rows = result.all()
 
     result = []
     for row in rows:
         result.append(
             device_schema.DeviceNotificationData(
-                content_type=row[0],
-                content=row[1],
-                is_read=row[2],
-                date=row[3],
+                id=row[0],
+                content_type=row[1],
+                content=row[2],
+                is_read=row[3],
+                date=row[4],
             )
         )
-
-    print(result)
 
     return result
 
