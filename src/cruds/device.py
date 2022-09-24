@@ -259,7 +259,7 @@ async def get_device_data_notifications(db: AsyncSession, user_id: int) -> List[
     """
     stmt = """
         SELECT
-            ID
+            ID,
             CONTENT_TYPE,
             CONTENT,
             IS_READ,
