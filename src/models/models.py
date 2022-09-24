@@ -102,6 +102,7 @@ class Notification(Base, CreatedNoDefaultTimeStampMixin):
 
     id = Column(Integer, primary_key=True, index=True)
     content = Column(String(300))
+    content_type = Column(String(150))
     is_read = Column(Boolean)
     device_id = Column(UUIDType(binary=False), ForeignKey("devices.id"))
 
