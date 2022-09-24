@@ -63,6 +63,11 @@ class IncorrectOldPasswordError(APIError):
     detail = "Old password is not correct"
 
 
+class IncorrectUserUpdate(APIError):
+    status_code = status.HTTP_401_UNAUTHORIZED
+    detail = "You are not allowed user to update the data"
+
+
 def error_response(error_types: List[Type[APIError]]) -> dict:
     """
     Convert error_types to OpenAPI format.
