@@ -246,54 +246,6 @@ async def get_historical_device_data_alarm(db: AsyncSession, device_id: str) -> 
     return result
 
 
-async def get_device_data_notifications(db: AsyncSession, user_id: int) -> List[device_schema.DeviceNotificationData]:
-    """
-    Get notifications data from db
-
-    Args:
-        db (AsyncSession): AsyncSession
-        device_id (str): Device id
-
-    Returns:
-        [device.schema.DeviceNotificationData]: List of device historical notification data
-    """
-    stmt = """
-        SELECT
-            ID,
-            CONTENT_TYPE,
-            CONTENT,
-            IS_READ,
-            TO_CHAR(CREATED_AT, 'YYYY/MM/DD') AS DATE
-        FROM NOTIFICATIONS
-        WHERE
-            DEVICE_ID IN (
-                SELECT
-                    ID
-                FROM DEVICES
-                WHERE
-                    USER_ID = :user_id
-            )
-        ORDER BY DATE
-    """
-
-    result: Result = await db.execute(stmt, params={"user_id": user_id})
-    rows = result.all()
-
-    result = []
-    for row in rows:
-        result.append(
-            device_schema.DeviceNotificationData(
-                id=row[0],
-                content_type=row[1],
-                content=row[2],
-                is_read=row[3],
-                date=row[4],
-            )
-        )
-
-    return result
-
-
 async def get_latitude_and_longitude(db: AsyncSession, device_id: str) -> Tuple[float | None, float | None]:
     """
     Get the latitude and longitude from the device
