@@ -1,13 +1,11 @@
 import os
 
 from dotenv import load_dotenv
-from fastapi import APIRouter, Depends, Path
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, Path
 from twilio.rest import Client
 
 import src.schemas.notification as notification_schema
 from src.constants.common import RE_UUID
-from src.db.db import get_db
 
 load_dotenv()
 router = APIRouter()
