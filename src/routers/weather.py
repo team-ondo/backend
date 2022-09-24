@@ -4,10 +4,19 @@ from requests.exceptions import RequestException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import src.cruds.device as device_crud
+import src.schemas.auth as auth_schema
 import src.schemas.weather as weather_schema
 from src.constants.common import OPEN_WEATHER_API, OPEN_WEATHER_APPID, RE_UUID
 from src.db.db import get_db
-from src.errors.errors import WeatherAPIRequestError, WeatherLangSupportException, error_response
+from src.errors.errors import (
+    TokenExpiredException,
+    TokenValidationFailException,
+    UserNotFoundException,
+    WeatherAPIRequestError,
+    WeatherLangSupportException,
+    error_response,
+)
+from src.routers.auth import get_current_user
 from src.utils.common import convert_celsius_to_fahrenheit
 
 router = APIRouter()
@@ -18,16 +27,23 @@ router = APIRouter()
     response_model=weather_schema.Weather,
     responses=error_response(
         [
+            UserNotFoundException,
+            TokenValidationFailException,
+            TokenExpiredException,
             WeatherLangSupportException,
             WeatherAPIRequestError,
         ]
     ),
 )
-async def read_weather_info(device_id: str = Path(regex=RE_UUID), lang: str = "en", db: AsyncSession = Depends(get_db)) -> dict:
+async def read_weather_info(
+    current_user: auth_schema.SystemUser = Depends(get_current_user),
+    device_id: str = Path(regex=RE_UUID),
+    lang: str = "en",
+    db: AsyncSession = Depends(get_db),
+) -> dict:
     if not (lang == "en" or lang == "ja"):
         raise WeatherLangSupportException()
 
-    # TODO Need to authenticate before fetching the device latitude and longitude
     # TODO Check device exists, and owned by user.
 
     lat, lon = await device_crud.get_latitude_and_longitude(db, device_id)
