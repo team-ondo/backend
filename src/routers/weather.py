@@ -1,23 +1,16 @@
-import os
-
 import requests
-from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, Path
 from requests.exceptions import RequestException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import src.cruds.device as device_crud
 import src.schemas.weather as weather_schema
-from src.constants.common import RE_UUID
+from src.constants.common import OPEN_WEATHER_API, OPEN_WEATHER_APPID, RE_UUID
 from src.db.db import get_db
 from src.errors.errors import WeatherAPIRequestError, WeatherLangSupportException, error_response
 from src.utils.common import convert_celsius_to_fahrenheit
 
-load_dotenv()
 router = APIRouter()
-
-OPEN_WEATHER_API = "https://api.openweathermap.org/data/2.5/weather"
-OPEN_WEATHER_APPID = os.getenv("OPEN_WEATHER_APPID")
 
 
 @router.get(

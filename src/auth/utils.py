@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import src.schemas.auth as auth_schema
-from src.constants.auth import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, JWT_REFRESH_KEY, JWT_SECRET_KEY, REFRESH_TOKEN_EXPIRE_MINUTES
+from src.constants.common import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, JWT_REFRESH_KEY, JWT_SECRET_KEY, REFRESH_TOKEN_EXPIRE_MINUTES
 from src.errors.errors import TokenExpiredException, TokenValidationFailException
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name="JWT")

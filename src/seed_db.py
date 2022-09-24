@@ -1,18 +1,14 @@
 import datetime as date
-import os
 import random
 from datetime import datetime
 
-from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from src.auth.utils import create_hash_password
+from src.constants.common import SYNC_DATABASE_URL
 from src.models.models import Alarm, Button, Device, Humidity, Motion, Notification, Register, Temperature, User
 from src.seed.generate_seed_data import generate_historic_alarm_data, generate_historic_temp_data
-
-load_dotenv()
-SYNC_DATABASE_URL = os.getenv("SYNC_DATABASE_URL")
 
 engine = create_engine(SYNC_DATABASE_URL, echo=True)
 
