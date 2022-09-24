@@ -67,7 +67,7 @@ for row in generated_data_set.get("humid"):
     data_set.append(Humidity(**row))
 
 data_set.append(Motion(motion=True, created_at=seed_time, device_id=uuid))
-data_set.append(Notification(content_type="Alarm", content="Please call", is_read=False, created_at=seed_time, device_id=uuid))
+data_set.append(Notification(id=1, content_type="Alarm", content="Please call", is_read=False, created_at=seed_time, device_id=uuid))
 data_set.append(Button(device_listening=True, created_at=seed_time, device_id=uuid))
 
 generated_data_set_alarm = generate_historic_alarm_data()
