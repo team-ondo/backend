@@ -101,7 +101,7 @@ class Notification(Base, CreatedNoDefaultTimeStampMixin):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True, index=True)
-    content_type = Column(String(150))
+    content_type = Column(String(20))
     content = Column(String(300))
     is_read = Column(Boolean)
     device_id = Column(UUIDType(binary=False), ForeignKey("devices.id"))
