@@ -9,7 +9,7 @@ import src.schemas.auth as auth_schema
 import src.schemas.notification as notification_schema
 from src.constants.common import RE_UUID, TWILIO_AUTH_TOKEN, TWILIO_SID, TWILIO_VERIFIED_NUMBER, TWILIO_VIRTUAL_NUMBER
 from src.db.db import get_db
-from src.errors.errors import IncorrectUserUpdate, TokenExpiredException, TokenValidationFailException, UserNotFoundException, error_response
+from src.errors.errors import IncorrectUserUpdateError, TokenExpiredException, TokenValidationFailException, UserNotFoundException, error_response
 from src.routers.auth import get_current_user
 
 router = APIRouter()
@@ -64,7 +64,7 @@ async def read_device_data_notifications(current_user: auth_schema.SystemUser = 
             UserNotFoundException,
             TokenValidationFailException,
             TokenExpiredException,
-            IncorrectUserUpdate,
+            IncorrectUserUpdateError,
         ]
     ),
 )
@@ -75,5 +75,5 @@ async def update_notification(
 ):
     notification_belongs_to_user = await notification_crud.notification_belongs_to_user(db, notification_id, current_user.user_id)
     if not notification_belongs_to_user:
-        raise IncorrectUserUpdate()
+        raise IncorrectUserUpdateError()
     await notification_crud.update_notification(db, notification_id)
