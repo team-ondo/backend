@@ -63,9 +63,19 @@ class IncorrectOldPasswordError(APIError):
     detail = "Old password is not correct"
 
 
-class IncorrectUserUpdate(APIError):
+class IncorrectUserUpdateError(APIError):
     status_code = status.HTTP_401_UNAUTHORIZED
     detail = "You are not allowed user to update the data"
+
+
+class DeviceIsNotConnectedToServerError(APIError):
+    status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+    detail = "The device is not connected to the server"
+
+
+class FailedToSendCommandToDeviceError(APIError):
+    status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+    detail = "Failed to send command to device"
 
 
 def error_response(error_types: List[Type[APIError]]) -> dict:
