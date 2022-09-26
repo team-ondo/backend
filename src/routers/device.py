@@ -32,7 +32,7 @@ async def read_device_data(
 ):
     # TODO Check device exists, and owned by user.
     result = await device_crud.get_latest_device_data(db, device_id)
-    return device_schema.Device(temperature_celsius=result[0], humidity=result[1])
+    return device_schema.Device(temperature_celsius=result[0], humidity=result[1], alarm=result[2])
 
 
 @router.get(
