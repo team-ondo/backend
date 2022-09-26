@@ -48,8 +48,8 @@ class UpdateDeviceSettings(BaseModel):
                 raise ValueError("Zip code format is not correct")
 
             longitude, latitude = fetch_longitude_latitude_from_zip_code(zip_code)
-            cls.longitude = longitude
-            cls.latitude = latitude
+            values["longitude"] = longitude
+            values["latitude"] = latitude
         return values
 
 
