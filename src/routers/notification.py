@@ -17,17 +17,17 @@ router = APIRouter()
 
 @router.post(
     "/device/{device_id}/alarm/on",
-    responses=error_response(
-        [
-            UserNotFoundException,
-            TokenValidationFailException,
-            TokenExpiredException,
-        ]
-    ),
+    # responses=error_response(
+    #     [
+    #         UserNotFoundException,
+    #         TokenValidationFailException,
+    #         TokenExpiredException,
+    #     ]
+    # ),
 )
 async def device_alarm_on(
     notification_status: notification_schema.NotificationStatus,
-    current_user: auth_schema.SystemUser = Depends(get_current_user),
+    # current_user: auth_schema.SystemUser = Depends(get_current_user),
     device_id: str = Path(regex=RE_UUID),
 ):
     client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
