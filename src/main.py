@@ -36,11 +36,6 @@ socket_manager = SocketManager(app)
 socket_manager._sio.register_namespace(HardwareNameSpace("/hardware"))
 
 
-@app.get("/")
-async def root() -> dict:
-    return {"message": "Hello World"}
-
-
 from src.routers import alarm  # noqa: E402
 
 app.include_router(alarm.router)
