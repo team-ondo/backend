@@ -86,13 +86,14 @@ async def find_device_settings_by_user_id(db: AsyncSession, user_id: int) -> Lis
     return result
 
 
-async def update_device_settings(db: AsyncSession, device: settings_schema.UpdateDeviceSettings):
+async def update_device_settings(db: AsyncSession, device: settings_schema.UpdateDeviceSettings, device_id: str):
     """
     Update device settings.
 
     Args:
         db (AsyncSession): AsyncSession.
         device (settings_schema.UpdateDeviceSettings): UpdateDeviceSettings object.
+        device_id (str): Device id.
     """
     update_set_values = []
     if device.device_name is not None:
@@ -114,6 +115,8 @@ async def update_device_settings(db: AsyncSession, device: settings_schema.Updat
         UPDATE DEVICES
         SET
             {update_set_values_joined}
+        WHERE
+            ID = :device_id
         """
     )
     await db.execute(
@@ -125,6 +128,7 @@ async def update_device_settings(db: AsyncSession, device: settings_schema.Updat
             "zip_code": device.zip_code,
             "latitude": device.latitude,
             "longitude": device.longitude,
+            "device_id": device_id,
         },
     )
 
@@ -154,13 +158,14 @@ async def find_user_password_by_user_id(db: AsyncSession, user_id: int) -> str:
     return result.first()[0]
 
 
-async def update_user_settings(db: AsyncSession, user: settings_schema.UpdateUserSettings):
+async def update_user_settings(db: AsyncSession, user: settings_schema.UpdateUserSettings, user_id: int):
     """
     Update user settings.
 
     Args:
         db (AsyncSession): AsyncSession.
         user (Dict[str, settings_schema.UpdateUserSettings]): UpdateUserSettings object.
+        user_id (int): User id.
     """
     update_set_values = []
     if user.first_name is not None:
@@ -179,6 +184,8 @@ async def update_user_settings(db: AsyncSession, user: settings_schema.UpdateUse
         UPDATE USERS
         SET
             {update_set_values_joined}
+        WHERE
+            ID = :user_id
         """
     )
     await db.execute(
@@ -189,5 +196,6 @@ async def update_user_settings(db: AsyncSession, user: settings_schema.UpdateUse
             "email": user.email,
             "phone_number": user.phone_number,
             "password": user.new_password if user.new_password is None else create_hash_password(user.new_password),
+            "user_id": user_id,
         },
     )

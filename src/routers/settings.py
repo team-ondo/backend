@@ -1,12 +1,13 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import src.cruds.settings as settings_cruds
 import src.schemas.auth as auth_schema
 import src.schemas.settings as settings_schema
 from src.auth.utils import verify_hash_password
+from src.constants.common import RE_UUID
 from src.db.db import get_db
 from src.errors.errors import IncorrectOldPasswordError, TokenExpiredException, TokenValidationFailException, UserNotFoundException, error_response
 from src.routers.auth import get_current_user
@@ -45,7 +46,7 @@ async def read_device_settings(current_user: auth_schema.SystemUser = Depends(ge
 
 
 @router.put(
-    "/settings/device",
+    "/settings/device/{device_id}",
     responses=error_response(
         [
             UserNotFoundException,
@@ -55,9 +56,12 @@ async def read_device_settings(current_user: auth_schema.SystemUser = Depends(ge
     ),
 )
 async def update_device_settings(
-    device: settings_schema.UpdateDeviceSettings, current_user: auth_schema.SystemUser = Depends(get_current_user), db: AsyncSession = Depends(get_db)
+    device: settings_schema.UpdateDeviceSettings,
+    device_id: str = Path(RE_UUID),
+    current_user: auth_schema.SystemUser = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
-    await settings_cruds.update_device_settings(db, device)
+    await settings_cruds.update_device_settings(db, device, device_id)
 
 
 @router.put(
@@ -79,4 +83,4 @@ async def update_user_settings(
         if not verify_hash_password(user.old_password, password):
             raise IncorrectOldPasswordError()
 
-    await settings_cruds.update_user_settings(db, user)
+    await settings_cruds.update_user_settings(db, user, current_user.user_id)
