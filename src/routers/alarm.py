@@ -2,9 +2,8 @@ from fastapi import APIRouter, Depends, Path
 
 import src.schemas.auth as auth_schema
 from src.constants.common import RE_UUID
-from src.errors.errors import (
+from src.errors.errors import (  # FailedToSendCommandToDeviceError,
     DeviceIsNotConnectedToServerError,
-    FailedToSendCommandToDeviceError,
     TokenExpiredException,
     TokenValidationFailException,
     UserNotFoundException,
