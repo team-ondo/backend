@@ -4,11 +4,11 @@ from pydantic import BaseModel, Field
 
 
 class Device(BaseModel):
-    temperature_celsius: float | None = Field(None, example="25.1", description="Temperature (Celsius)")
+    temperature_celsius: float = Field(example="25.1", description="Temperature (Celsius)")
     # TODO Add later
     # temperature_fahrenheit: float | None = Field(None, example="77.18", description="Temperature (Fahrenheit)")
-    humidity: float | None = Field(None, example="87", description="Humidity (Percentage)")
-    alarm: bool | None = Field(None, example="True", description="Alarm status, true or false.")
+    humidity: float = Field(example="87", description="Humidity (Percentage)")
+    alarm: bool = Field(example="True", description="Alarm status, true or false.")
 
 
 class DeviceHistorical(BaseModel):
