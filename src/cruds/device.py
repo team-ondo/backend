@@ -8,7 +8,7 @@ from sqlalchemy.sql import text
 import src.schemas.device as device_schema
 
 
-async def get_latest_device_data(db: AsyncSession, device_id: str) -> Tuple[float | None, float | None]:
+async def get_latest_device_data(db: AsyncSession, device_id: str) -> Tuple[float, float, bool]:
     """Get latest device info
 
     Get the latest temperature, humidity from the database.
@@ -18,13 +18,14 @@ async def get_latest_device_data(db: AsyncSession, device_id: str) -> Tuple[floa
         device_id (str): Device id
 
     Returns:
-        (float, float): Tuples in the order of temperature, humidity.
+        (float, float, bool): Tuples in the order of temperature, humidity, alarm.
     """
     stmt = text(
         """
         SELECT
             SUB_TEMP.TEMPERATURE,
-            SUB_HUMID.HUMIDITY
+            SUB_HUMID.HUMIDITY,
+            SUB_ALARM.IS_ALARM
         FROM
             (
                 SELECT
@@ -51,16 +52,28 @@ async def get_latest_device_data(db: AsyncSession, device_id: str) -> Tuple[floa
                     HUMIDITY A
                 WHERE
                     A.DEVICE_ID = :device_id
-            ) SUB_HUMID
+            ) SUB_HUMID,
+            (
+                SELECT
+                    A.IS_ALARM,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY DEVICE_ID
+                        ORDER BY
+                            CREATED_AT DESC
+                    ) AS NUM
+                FROM
+                    ALARM A
+            WHERE
+                A.DEVICE_ID = :device_id
+            ) SUB_ALARM
         WHERE
             SUB_TEMP.NUM = 1
             AND SUB_HUMID.NUM = 1
+            AND SUB_ALARM.NUM = 1
     """
     )
     result: Result = await db.execute(stmt, params={"device_id": device_id})
-    first: None | Tuple[float, float] = result.first()
-    if first is None:
-        return (None, None)
+    first: Tuple[float, float, bool] = result.one()
     return first
 
 
