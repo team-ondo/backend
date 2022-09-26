@@ -8,6 +8,7 @@ class Device(BaseModel):
     # TODO Add later
     # temperature_fahrenheit: float | None = Field(None, example="77.18", description="Temperature (Fahrenheit)")
     humidity: float | None = Field(None, example="87", description="Humidity (Percentage)")
+    alarm: bool | None = Field(None, example="True", description="Alarm status, true or false.")
 
 
 class DeviceHistorical(BaseModel):
