@@ -24,6 +24,19 @@ def get_date():
     return datetime.now() - date.timedelta(random.randint(1, 7))
 
 
+# content_type
+"Alarm"
+"Snooze"
+"Out"
+
+content_types = ["Alarm", "Snooze", "Out"]
+
+
+def get_content_type():
+    index = random.randint(0, 3) - 1
+    return content_types[index]
+
+
 data_set = []
 
 data_set.append(Register(id=uuid, registered=True, created_at=seed_time, updated_at=seed_time))
@@ -63,10 +76,35 @@ for row in generated_data_set.get("humid"):
     data_set.append(Humidity(**row))
 
 data_set.append(Motion(motion=True, created_at=seed_time, device_id=uuid))
-data_set.append(Notification(id=1, content_type="Alarm", content="Please call", is_read=False, created_at=seed_time, device_id=uuid))
+
 data_set.append(Button(device_listening=True, created_at=seed_time, device_id=uuid))
 
 generated_data_set_alarm = generate_historic_alarm_data()
+
+for i in range(1, 21):
+    notification_time = get_date()
+    dynamic_content = get_content_type()
+    message = ""
+
+    if dynamic_content == "Alarm":
+        message = "Alarm has been triggered, call to check in!"
+    elif dynamic_content == "Snooze":
+        message = "Alarm has been snoozed."
+    else:
+        message = "Out of house."
+
+    id = i
+
+    data_set.append(
+        Notification(
+            id=id,
+            content_type=dynamic_content,
+            content=message,
+            is_read=False,
+            created_at=notification_time,
+            device_id=uuid,
+        )
+    )
 
 for row in generated_data_set_alarm.get("alarm"):
     data_set.append(Alarm(**row))
