@@ -24,16 +24,11 @@ def get_date():
     return datetime.now() - date.timedelta(random.randint(1, 7))
 
 
-# content_type
-"Alarm"
-"Snooze"
-"Out"
-
 content_types = ["Alarm", "Snooze", "Out"]
 
 
 def get_content_type():
-    index = random.randint(0, 3) - 1
+    index = random.randint(0, 2)
     return content_types[index]
 
 
