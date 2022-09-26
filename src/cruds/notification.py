@@ -83,7 +83,7 @@ async def find_device_notification_by_user_id(db: AsyncSession, user_id: int) ->
                 WHERE
                     USER_ID = :user_id
             )
-        ORDER BY DATE
+        ORDER BY DATE DESC
     """
 
     result: Result = await db.execute(stmt, params={"user_id": user_id})
