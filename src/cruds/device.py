@@ -77,6 +77,31 @@ async def get_latest_device_data(db: AsyncSession, device_id: str) -> Tuple[floa
     return first
 
 
+async def find_device_name_by_device_id(db: AsyncSession, device_id: str) -> device_schema.DeviceName:
+    """
+    Find device name by device id.
+
+    Args:
+        db (AsyncSession): AsyncSession.
+        device_id (str): Device id.
+
+    Returns:
+        device_schema.DeviceName: DeviceName object.
+    """
+    stmt = text(
+        """
+        SELECT
+            DEVICE_NAME
+        FROM
+            DEVICES
+        WHERE
+            ID = :device_id
+    """
+    )
+    result: Result = await db.execute(stmt, params={"device_id": device_id})
+    return device_schema.DeviceName(device_name=result.one()[0])
+
+
 async def get_historical_device_data_day(db: AsyncSession, device_id: str) -> List[device_schema.DeviceHistorical]:
     """
     Get 24 hour points of temperature and humidity from device
