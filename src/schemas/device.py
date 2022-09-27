@@ -11,6 +11,10 @@ class Device(BaseModel):
     alarm: bool = Field(example="True", description="Alarm status, true or false.")
 
 
+class DeviceName(BaseModel):
+    device_name: str = Field(example="Roppongi_Device", description="Device name")
+
+
 class DeviceHistorical(BaseModel):
     max_temp: float = Field(example="25.1", description="Max Temperature (Celsius)")
     min_temp: float = Field(example="25.1", description="Min Temperature (Celsius)")
