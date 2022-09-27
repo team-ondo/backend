@@ -115,6 +115,25 @@ async def read_device_data_alarm(
     return result
 
 
+@router.get(
+    "/device-data/{device_id}/device-name",
+    responses=error_response(
+        [
+            UserNotFoundException,
+            TokenValidationFailException,
+            TokenExpiredException,
+        ]
+    ),
+    response_model=device_schema.DeviceName,
+)
+async def read_device_name(
+    current_user: auth_schema.SystemUser = Depends(get_current_user),
+    device_id: str = Path(regex=RE_UUID),
+    db: AsyncSession = Depends(get_db),
+):
+    return await device_crud.find_device_name_by_device_id(db, device_id)
+
+
 @router.post("/device-data/{device_id}")
 async def create_device_data(
     device_data_list: List[device_schema.DeviceDataCreate],
