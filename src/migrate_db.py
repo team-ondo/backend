@@ -1,27 +1,23 @@
-import asyncio
+from sqlalchemy import create_engine
 
-from sqlalchemy.ext.asyncio import create_async_engine
-
-from src.constants.common import ASYNC_DATABASE_URL
+from src.constants.common import SYNC_DATABASE_URL
 from src.models import models
 
-engine = create_async_engine(ASYNC_DATABASE_URL, echo=True)
+engine = create_engine(SYNC_DATABASE_URL, echo=True)
 
 
-async def drop_database() -> None:
-    async with engine.begin() as conn:
-        await conn.run_sync(models.Base.metadata.drop_all)
+def drop_database() -> None:
+    models.Base.metadata.drop_all(engine)
 
 
-async def create_database() -> None:
-    async with engine.begin() as conn:
-        await conn.run_sync(models.Base.metadata.create_all)
+def create_database() -> None:
+    models.Base.metadata.create_all(engine)
 
 
-async def reset_database() -> None:
-    await drop_database()
-    await create_database()
+def reset_database() -> None:
+    drop_database()
+    create_database()
 
 
 if __name__ == "__main__":
-    asyncio.run(reset_database())
+    reset_database()
