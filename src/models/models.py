@@ -40,6 +40,7 @@ class User(Base, CreatedUpdatedDefaultTimeStampMixin):
     last_name = Column(String(50))
     email = Column(String(100), unique=True, index=True)
     phone_number = Column(String(20))
+    password = Column(String)
 
     devices = relationship("Device", back_populates="user")
 
@@ -47,10 +48,13 @@ class User(Base, CreatedUpdatedDefaultTimeStampMixin):
 class Device(Base, CreatedUpdatedDefaultTimeStampMixin):
     __tablename__ = "devices"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUIDType(binary=False), primary_key=True, index=True)
+    zip_code = Column(String(7))
     latitude = Column(Float)
     longitude = Column(Float)
     device_name = Column(String(100))
+    temp_upper_limit = Column(Float)
+    temp_lower_limit = Column(Float)
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="devices")
@@ -68,7 +72,7 @@ class Temperature(Base, CreatedNoDefaultTimeStampMixin):
 
     id = Column(Integer, primary_key=True, index=True)
     temperature = Column(Float)
-    device_id = Column(Integer, ForeignKey("devices.id"))
+    device_id = Column(UUIDType(binary=False), ForeignKey("devices.id"))
 
     device = relationship("Device", back_populates="temperature_data")
 
@@ -78,7 +82,7 @@ class Humidity(Base, CreatedNoDefaultTimeStampMixin):
 
     id = Column(Integer, primary_key=True, index=True)
     humidity = Column(Float)
-    device_id = Column(Integer, ForeignKey("devices.id"))
+    device_id = Column(UUIDType(binary=False), ForeignKey("devices.id"))
 
     device = relationship("Device", back_populates="humidity_data")
 
@@ -88,7 +92,7 @@ class Motion(Base, CreatedNoDefaultTimeStampMixin):
 
     id = Column(Integer, primary_key=True, index=True)
     motion = Column(Boolean)
-    device_id = Column(Integer, ForeignKey("devices.id"))
+    device_id = Column(UUIDType(binary=False), ForeignKey("devices.id"))
 
     device = relationship("Device", back_populates="motion_data")
 
@@ -97,9 +101,10 @@ class Notification(Base, CreatedNoDefaultTimeStampMixin):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True, index=True)
+    content_type = Column(String(20))
     content = Column(String(300))
     is_read = Column(Boolean)
-    device_id = Column(Integer, ForeignKey("devices.id"))
+    device_id = Column(UUIDType(binary=False), ForeignKey("devices.id"))
 
     device = relationship("Device", back_populates="notification_data")
 
@@ -109,7 +114,7 @@ class Button(Base, CreatedNoDefaultTimeStampMixin):
 
     id = Column(Integer, primary_key=True, index=True)
     device_listening = Column(Boolean)
-    device_id = Column(Integer, ForeignKey("devices.id"))
+    device_id = Column(UUIDType(binary=False), ForeignKey("devices.id"))
 
     device = relationship("Device", back_populates="button_data")
 
@@ -119,6 +124,6 @@ class Alarm(Base, CreatedNoDefaultTimeStampMixin):
 
     id = Column(Integer, primary_key=True, index=True)
     is_alarm = Column(Boolean)
-    device_id = Column(Integer, ForeignKey("devices.id"))
+    device_id = Column(UUIDType(binary=False), ForeignKey("devices.id"))
 
     device = relationship("Device", back_populates="alarm_data")

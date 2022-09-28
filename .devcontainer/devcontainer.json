@@ -45,7 +45,9 @@
 				"njpwerner.autodocstring",
 				"tamasfe.even-better-toml",
 				"streetsidesoftware.code-spell-checker",
-				"adpyke.vscode-sql-formatter"
+				"adpyke.vscode-sql-formatter",
+				"Gruntfuggly.todo-tree",
+				"wmaurer.change-case"
 			]
 		}
 	},
@@ -59,5 +61,5 @@
 
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "root",
-	"postCreateCommand": "poetry config virtualenvs.create false && poetry install"
+	"postCreateCommand": "poetry config virtualenvs.create false && poetry install && git config --local core.hooksPath .githooks"
 }

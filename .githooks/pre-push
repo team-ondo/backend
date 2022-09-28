@@ -1,0 +1,15 @@
+#!/bin/bash
+
+execute() {
+    echo "\$ $@"
+    "$@"
+}
+
+
+GREEN='\033[92m'
+BOLD='\033[1m'
+END='\033[0m'
+
+echo -e "${GREEN}${BOLD}Creating requirements.txt from pyproject.toml${END}"
+execute make require
+echo -e "${GREEN}${BOLD}Created requirements.txt. Make sure you commit that too.${END}"
