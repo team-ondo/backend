@@ -19,7 +19,7 @@
     <a href="https://github.com/team-ondo/backend"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/team-ondo/backend">View Demo</a>
+    <a href="https://ondo.onrender.com/">View Demo</a>
     ·
     <a href="https://github.com/team-ondo/backend/issues">Report Bug</a>
     ·
