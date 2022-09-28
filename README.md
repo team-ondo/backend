@@ -69,13 +69,13 @@
 
 ### Built With
 
-[![Python][Python]][Python-url]
-[![FastAPI][FastAPI]][FastAPI-url]
-[![Socket.io]][Socket.io-url]
-[![Postgres][Postgres]][Postgres-url]
-[![JWT][JWT]][JWT-url]
-[![Docker][Docker]][Docker-url]
-[![Visual studio code][Visual studio code]][Visual studio code-url]
+[![Python][Python]][Python-url]  
+[![FastAPI][FastAPI]][FastAPI-url]  
+[![Socket.io]][Socket.io-url]  
+[![Postgres][Postgres]][Postgres-url]  
+[![JWT][JWT]][JWT-url]  
+[![Docker][Docker]][Docker-url]  
+[![Visual studio code][Visual studio code]][Visual studio code-url]  
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
